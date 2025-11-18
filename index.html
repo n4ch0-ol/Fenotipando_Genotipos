@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fenotipiando el Genotipo: Completo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>🧬 Laboratorio Genético: Fenotipo Final</h1>
+
+    <div class="contenedor-principal">
+        <aside class="seccion-persona">
+            <div class="info-persona">
+                <h3>Estado del Servidor</h3>
+                <p id="status-blender" class="status-off">🔴 Desconectado</p>
+                <small>Abre Blender, ve a Scripting y dale Play.</small>
+            </div>
+            <div id="resumen-genotipo">
+                <h4>Perfil Genético</h4>
+                <div id="resumen-contenido"><p>Cargando sistema...</p></div>
+            </div>
+        </aside>
+
+        <main class="seccion-formularios">
+            
+            <div class="progreso">
+                <div class="barra-progreso"><div class="barra-progreso-fill" id="barra-progreso-fill"></div></div>
+                <div class="paso-info" id="paso-info">Paso 1: Genética</div>
+            </div>
+
+            <div class="paso activo" id="paso-1">
+                <h3>Paso 1: Genética (Herencia)</h3>
+                <div class="opcion-genotipo especial-sexo">
+                    <label>Sexo Biológico</label>
+                    <div class="genes-group">
+                        <select id="cromo_padre"><option value="X">X (Niña - XX)</option><option value="Y">Y (Niño - XY)</option></select>
+                        <select disabled><option>X (Madre)</option></select>
+                    </div>
+                </div>
+                <div class="grid-genetico">
+                    <div class="opcion-genotipo"><label>Gen A: Pelo</label><div class="select-pair"><select id="genA_padre"><option value="A">A (Oscuro)</option><option value="a">a (Claro)</option></select><select id="genA_madre"><option value="A">A (Oscuro)</option><option value="a">a (Claro)</option></select></div></div>
+                    <div class="opcion-genotipo"><label>Gen B: Textura</label><div class="select-pair"><select id="genB_padre"><option value="B">B (Lacio)</option><option value="b">b (Rulos)</option></select><select id="genB_madre"><option value="B">B (Lacio)</option><option value="b">b (Rulos)</option></select></div></div>
+                    <div class="opcion-genotipo"><label>Gen C: Piel</label><div class="select-pair"><select id="genC_padre"><option value="C">C (Oscura)</option><option value="c">c (Clara)</option></select><select id="genC_madre"><option value="C">C (Oscura)</option><option value="c">c (Clara)</option></select></div></div>
+                    <div class="opcion-genotipo"><label>Gen D: Ojos</label><div class="select-pair"><select id="genD_padre"><option value="D">D (Café)</option><option value="d">d (Azul)</option></select><select id="genD_madre"><option value="D">D (Café)</option><option value="d">d (Azul)</option></select></div></div>
+                    <div class="opcion-genotipo"><label>Gen E: Altura</label><div class="select-pair"><select id="genE_padre"><option value="E">E (Alta)</option><option value="e">e (Baja)</option></select><select id="genE_madre"><option value="E">E (Alta)</option><option value="e">e (Baja)</option></select></div></div>
+                    <div class="opcion-genotipo"><label>Gen F: Nariz</label><div class="select-pair"><select id="genF_padre"><option value="F">F (Pequeña)</option><option value="f">f (Grande)</option></select><select id="genF_madre"><option value="F">F (Pequeña)</option><option value="f">f (Grande)</option></select></div></div>
+                </div>
+            </div>
+
+            <div class="paso" id="paso-2">
+                <h3>Paso 2: Estilo de Vida</h3>
+                <div class="opcion-genotipo">
+                    <label>Actividad Física</label>
+                    <select id="env_actividad">
+                        <option value="normal">Vida Normal</option>
+                        <option value="ejercicio">Deportista (Musculoso)</option>
+                        <option value="sedentario">Sedentario (Sobrepeso)</option>
+                    </select>
+                </div>
+                <div class="opcion-genotipo">
+                    <label><input type="checkbox" id="env_tinte"> Pelo Teñido</label>
+                    <select id="tinte_color" disabled style="width:100%; margin-top:5px;">
+                        <option value="rosa">Rosa Fantasía</option>
+                        <option value="azul">Azul Eléctrico</option>
+                        <option value="verde">Verde Alien</option>
+                        <option value="platino">Rubio Platino</option>
+                    </select>
+                </div>
+                <label class="checkbox-card"><input type="checkbox" id="env_quemadura"><div class="txt"><strong>Quemadura Solar</strong><span>Piel roja por exceso de UV.</span></div></label>
+                <label class="checkbox-card"><input type="checkbox" id="env_botox"><div class="txt"><strong>Botox / Cirugía</strong><span>Rostro estirado artificialmente.</span></div></label>
+                <label class="checkbox-card"><input type="checkbox" id="env_piercing"><div class="txt"><strong>Piercings</strong><span>Modificación corporal.</span></div></label>
+                <label class="checkbox-card"><input type="checkbox" id="env_tatuaje"><div class="txt"><strong>Tatuajes</strong><span>Tinta visible en el cuerpo.</span></div></label>
+                <label class="checkbox-card"><input type="checkbox" id="env_cicatriz"><div class="txt"><strong>Cicatrices</strong><span>Marcas de accidentes.</span></div></label>
+            </div>
+
+            <div class="paso" id="paso-3">
+                <h3>Paso 3: Mutaciones</h3>
+                <label class="checkbox-card mutacion"><input type="checkbox" id="mut_pecas"><div class="txt"><strong>Pecas (MC1R)</strong><span>Manchas de pigmento en el rostro.</span></div></label>
+                <label class="checkbox-card mutacion"><input type="checkbox" id="mut_pelirrojo"><div class="txt"><strong>Pelirrojo</strong><span>Cabello naranja, piel pálida.</span></div></label>
+                <label class="checkbox-card mutacion"><input type="checkbox" id="mut_albinismo"><div class="txt"><strong>Albinismo</strong><span>Sin pigmento (blanco total).</span></div></label>
+                <label class="checkbox-card mutacion"><input type="checkbox" id="mut_calvicie"><div class="txt"><strong>Alopecia</strong><span>Pérdida de cabello.</span></div></label>
+            </div>
+
+            <div class="paso" id="paso-4">
+                <h3>Paso 4: Epigenética</h3>
+                <p style="font-size:0.9em; color:#666; margin-bottom:15px;">Marcas químicas que encienden o apagan genes según la historia de tus antepasados.</p>
+                
+                <label class="checkbox-card" style="border-left: 4px solid #ff9800;">
+                    <input type="checkbox" id="epi_miedo">
+                    <div class="txt">
+                        <strong>Miedo Heredado (Trauma)</strong>
+                        <span>Mayor sensibilidad al estrés. (Se muestra como una nube gris sobre el sujeto).</span>
+                    </div>
+                </label>
+
+                <label class="checkbox-card" style="border-left: 4px solid #2196f3;">
+                    <input type="checkbox" id="epi_escasez">
+                    <div class="txt">
+                        <strong>Memoria de Escasez</strong>
+                        <span>El cuerpo "ahorra" energía. En este modelo: Extrema delgadez por malnutrición ancestral.</span>
+                    </div>
+                </label>
+            </div>
+
+            <div class="botones-navegacion">
+                <button class="btn-nav" id="btn-anterior" disabled>Anterior</button>
+                <button class="btn-nav primary" id="btn-siguiente">Siguiente</button>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
