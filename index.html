@@ -3,113 +3,2331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fenotipiando el Genotipo: Completo</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Modelo Humano Cuerpo Completo Hiperrealista</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .controls-panel {
+            width: 380px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 25px;
+            overflow-y: auto;
+            max-height: 100vh;
+            border-right: 3px solid #00d4ff;
+            box-shadow: 5px 0 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        .canvas-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 26px;
+            margin-bottom: 25px;
+            color: #00d4ff;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+            border-bottom: 2px solid #00d4ff;
+            padding-bottom: 15px;
+        }
+        
+        h2 {
+            font-size: 18px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #4dd0e1;
+            border-left: 4px solid #00d4ff;
+            padding-left: 12px;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+            background: rgba(0, 212, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .control-group:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.4);
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #b3e5fc;
+            font-weight: 600;
+        }
+        
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            cursor: pointer;
+        }
+        
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #00d4ff;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
+        }
+        
+        .control-group input[type="color"] {
+            width: 100%;
+            height: 45px;
+            border: 2px solid #00d4ff;
+            border-radius: 8px;
+            cursor: pointer;
+            background: transparent;
+        }
+        
+        .control-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .value-display {
+            font-size: 13px;
+            color: #4dd0e1;
+            text-align: right;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.6);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        #humanCanvas {
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+                        0 0 40px rgba(0, 212, 255, 0.2);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+        }
+        
+        .info-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #00d4ff;
+            max-width: 320px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .info-panel h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .info-panel p {
+            font-size: 13px;
+            line-height: 1.8;
+            color: #b3e5fc;
+            margin-bottom: 10px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .stat-item {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #4dd0e1;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 16px;
+            color: #00d4ff;
+            font-weight: bold;
+        }
+        
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loading-content {
+            text-align: center;
+        }
+        
+        .spinner {
+            border: 5px solid rgba(0, 212, 255, 0.3);
+            border-top: 5px solid #00d4ff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .render-info {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.85);
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: 1px solid #00d4ff;
+            font-size: 12px;
+            color: #4dd0e1;
+        }
+        
+        .layer-toggle {
+            margin-top: 10px;
+        }
+        
+        .layer-toggle input[type="checkbox"] {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-
-    <h1>🧬 Laboratorio Genético: Fenotipo Final</h1>
-
-    <div class="contenedor-principal">
-        <aside class="seccion-persona">
-            <div class="info-persona">
-                <h3>Estado del Servidor</h3>
-                <p id="status-blender" class="status-off">🔴 Desconectado</p>
-                <small>Abre Blender, ve a Scripting y dale Play.</small>
-            </div>
-            <div id="resumen-genotipo">
-                <h4>Perfil Genético</h4>
-                <div id="resumen-contenido"><p>Cargando sistema...</p></div>
-            </div>
-        </aside>
-
-        <main class="seccion-formularios">
+    <div class="container">
+        <div class="controls-panel">
+            <h1>🎨 Sistema Avanzado de Renderizado</h1>
             
-            <div class="progreso">
-                <div class="barra-progreso"><div class="barra-progreso-fill" id="barra-progreso-fill"></div></div>
-                <div class="paso-info" id="paso-info">Paso 1: Genética</div>
+            <h2>🧬 GENÉTICA Y HERENCIA</h2>
+            
+            <div class="control-group">
+                <label style="color: #00ff88; font-weight: bold;">⚠️ Selecciona 2 alelos para cada característica</label>
+                <p style="font-size: 11px; color: #b3e5fc; margin-top: 5px;">
+                    Dominante (D) se expresa sobre Recesivo (r). Necesitas DD, Dr o rr para cada rasgo.
+                </p>
             </div>
-
-            <div class="paso activo" id="paso-1">
-                <h3>Paso 1: Genética (Herencia)</h3>
-                <div class="opcion-genotipo especial-sexo">
-                    <label>Sexo Biológico</label>
-                    <div class="genes-group">
-                        <select id="cromo_padre"><option value="X">X (Niña - XX)</option><option value="Y">Y (Niño - XY)</option></select>
-                        <select disabled><option>X (Madre)</option></select>
-                    </div>
-                </div>
-                <div class="grid-genetico">
-                    <div class="opcion-genotipo"><label>Gen A: Pelo</label><div class="select-pair"><select id="genA_padre"><option value="A">A (Oscuro)</option><option value="a">a (Claro)</option></select><select id="genA_madre"><option value="A">A (Oscuro)</option><option value="a">a (Claro)</option></select></div></div>
-                    <div class="opcion-genotipo"><label>Gen B: Textura</label><div class="select-pair"><select id="genB_padre"><option value="B">B (Lacio)</option><option value="b">b (Rulos)</option></select><select id="genB_madre"><option value="B">B (Lacio)</option><option value="b">b (Rulos)</option></select></div></div>
-                    <div class="opcion-genotipo"><label>Gen C: Piel</label><div class="select-pair"><select id="genC_padre"><option value="C">C (Oscura)</option><option value="c">c (Clara)</option></select><select id="genC_madre"><option value="C">C (Oscura)</option><option value="c">c (Clara)</option></select></div></div>
-                    <div class="opcion-genotipo"><label>Gen D: Ojos</label><div class="select-pair"><select id="genD_padre"><option value="D">D (Café)</option><option value="d">d (Azul)</option></select><select id="genD_madre"><option value="D">D (Café)</option><option value="d">d (Azul)</option></select></div></div>
-                    <div class="opcion-genotipo"><label>Gen E: Altura</label><div class="select-pair"><select id="genE_padre"><option value="E">E (Alta)</option><option value="e">e (Baja)</option></select><select id="genE_madre"><option value="E">E (Alta)</option><option value="e">e (Baja)</option></select></div></div>
-                    <div class="opcion-genotipo"><label>Gen F: Nariz</label><div class="select-pair"><select id="genF_padre"><option value="F">F (Pequeña)</option><option value="f">f (Grande)</option></select><select id="genF_madre"><option value="F">F (Pequeña)</option><option value="f">f (Grande)</option></select></div></div>
-                </div>
+            
+            <h2>👤 Color de Piel (Herencia Poligénica)</h2>
+            
+            <div class="control-group">
+                <label>Alelo 1 - Color de Piel</label>
+                <select id="skinAllele1">
+                    <option value="dark">Oscuro (Dominante - D)</option>
+                    <option value="light" selected>Claro (Recesivo - r)</option>
+                </select>
             </div>
-
-            <div class="paso" id="paso-2">
-                <h3>Paso 2: Estilo de Vida</h3>
-                <div class="opcion-genotipo">
-                    <label>Actividad Física</label>
-                    <select id="env_actividad">
-                        <option value="normal">Vida Normal</option>
-                        <option value="ejercicio">Deportista (Musculoso)</option>
-                        <option value="sedentario">Sedentario (Sobrepeso)</option>
-                    </select>
-                </div>
-                <div class="opcion-genotipo">
-                    <label><input type="checkbox" id="env_tinte"> Pelo Teñido</label>
-                    <select id="tinte_color" disabled style="width:100%; margin-top:5px;">
-                        <option value="rosa">Rosa Fantasía</option>
-                        <option value="azul">Azul Eléctrico</option>
-                        <option value="verde">Verde Alien</option>
-                        <option value="platino">Rubio Platino</option>
-                    </select>
-                </div>
-                <label class="checkbox-card"><input type="checkbox" id="env_quemadura"><div class="txt"><strong>Quemadura Solar</strong><span>Piel roja por exceso de UV.</span></div></label>
-                <label class="checkbox-card"><input type="checkbox" id="env_botox"><div class="txt"><strong>Botox / Cirugía</strong><span>Rostro estirado artificialmente.</span></div></label>
-                <label class="checkbox-card"><input type="checkbox" id="env_piercing"><div class="txt"><strong>Piercings</strong><span>Modificación corporal.</span></div></label>
-                <label class="checkbox-card"><input type="checkbox" id="env_tatuaje"><div class="txt"><strong>Tatuajes</strong><span>Tinta visible en el cuerpo.</span></div></label>
-                <label class="checkbox-card"><input type="checkbox" id="env_cicatriz"><div class="txt"><strong>Cicatrices</strong><span>Marcas de accidentes.</span></div></label>
+            
+            <div class="control-group">
+                <label>Alelo 2 - Color de Piel</label>
+                <select id="skinAllele2">
+                    <option value="dark">Oscuro (Dominante - D)</option>
+                    <option value="light" selected>Claro (Recesivo - r)</option>
+                </select>
             </div>
-
-            <div class="paso" id="paso-3">
-                <h3>Paso 3: Mutaciones</h3>
-                <label class="checkbox-card mutacion"><input type="checkbox" id="mut_pecas"><div class="txt"><strong>Pecas (MC1R)</strong><span>Manchas de pigmento en el rostro.</span></div></label>
-                <label class="checkbox-card mutacion"><input type="checkbox" id="mut_pelirrojo"><div class="txt"><strong>Pelirrojo</strong><span>Cabello naranja, piel pálida.</span></div></label>
-                <label class="checkbox-card mutacion"><input type="checkbox" id="mut_albinismo"><div class="txt"><strong>Albinismo</strong><span>Sin pigmento (blanco total).</span></div></label>
-                <label class="checkbox-card mutacion"><input type="checkbox" id="mut_calvicie"><div class="txt"><strong>Alopecia</strong><span>Pérdida de cabello.</span></div></label>
+            
+            <div class="control-group">
+                <label>Fenotipo Resultante de Piel</label>
+                <input type="color" id="skinTone" value="#d4a574" disabled>
+                <div class="value-display" id="skinPhenotype">Genotipo: rr (Homocigoto Recesivo)</div>
             </div>
-
-            <div class="paso" id="paso-4">
-                <h3>Paso 4: Epigenética</h3>
-                <p style="font-size:0.9em; color:#666; margin-bottom:15px;">Marcas químicas que encienden o apagan genes según la historia de tus antepasados.</p>
-                
-                <label class="checkbox-card" style="border-left: 4px solid #ff9800;">
-                    <input type="checkbox" id="epi_miedo">
-                    <div class="txt">
-                        <strong>Miedo Heredado (Trauma)</strong>
-                        <span>Mayor sensibilidad al estrés. (Se muestra como una nube gris sobre el sujeto).</span>
-                    </div>
-                </label>
-
-                <label class="checkbox-card" style="border-left: 4px solid #2196f3;">
-                    <input type="checkbox" id="epi_escasez">
-                    <div class="txt">
-                        <strong>Memoria de Escasez</strong>
-                        <span>El cuerpo "ahorra" energía. En este modelo: Extrema delgadez por malnutrición ancestral.</span>
-                    </div>
-                </label>
+            
+            <h2>👁️ Color de Ojos</h2>
+            
+            <div class="control-group">
+                <label>Alelo 1 - Color de Ojos</label>
+                <select id="eyeAllele1">
+                    <option value="brown">Café/Negro (Dominante - B)</option>
+                    <option value="green" selected>Verde (Intermedio - G)</option>
+                    <option value="blue">Azul (Recesivo - b)</option>
+                </select>
             </div>
-
-            <div class="botones-navegacion">
-                <button class="btn-nav" id="btn-anterior" disabled>Anterior</button>
-                <button class="btn-nav primary" id="btn-siguiente">Siguiente</button>
+            
+            <div class="control-group">
+                <label>Alelo 2 - Color de Ojos</label>
+                <select id="eyeAllele2">
+                    <option value="brown">Café/Negro (Dominante - B)</option>
+                    <option value="green" selected>Verde (Intermedio - G)</option>
+                    <option value="blue">Azul (Recesivo - b)</option>
+                </select>
             </div>
-        </main>
+            
+            <div class="control-group">
+                <label>Fenotipo Resultante de Ojos</label>
+                <input type="color" id="eyeColor" value="#4a7c59" disabled>
+                <div class="value-display" id="eyePhenotype">Genotipo: GG (Homocigoto - Verde)</div>
+            </div>
+            
+            <div class="control-group">
+                <label>Tamaño de Ojos: <span id="eyeSizeVal">100</span>%</label>
+                <input type="range" id="eyeSize" min="70" max="130" value="100">
+            </div>
+            
+            <h2>💇 Color de Cabello</h2>
+            
+            <div class="control-group">
+                <label>Alelo 1 - Color de Cabello</label>
+                <select id="hairAllele1">
+                    <option value="black" selected>Negro (Dominante - N)</option>
+                    <option value="brown">Castaño (Dominante - C)</option>
+                    <option value="blonde">Rubio (Recesivo - r)</option>
+                    <option value="red">Pelirrojo (Recesivo - p)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Alelo 2 - Color de Cabello</label>
+                <select id="hairAllele2">
+                    <option value="black" selected>Negro (Dominante - N)</option>
+                    <option value="brown">Castaño (Dominante - C)</option>
+                    <option value="blonde">Rubio (Recesivo - r)</option>
+                    <option value="red">Pelirrojo (Recesivo - p)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Fenotipo Resultante de Cabello</label>
+                <input type="color" id="hairColor" value="#3d2817" disabled>
+                <div class="value-display" id="hairPhenotype">Genotipo: NN (Homocigoto Dominante)</div>
+            </div>
+            
+            <div class="control-group">
+                <label>Estilo de Cabello</label>
+                <select id="hairStyle">
+                    <option value="short">Corto</option>
+                    <option value="medium">Medio</option>
+                    <option value="long">Largo</option>
+                    <option value="curly">Rizado</option>
+                    <option value="bald">Calvo</option>
+                </select>
+            </div>
+            
+            <h2>🦷 Tipo de Cabello (Textura)</h2>
+            
+            <div class="control-group">
+                <label>Alelo 1 - Textura</label>
+                <select id="hairTextureAllele1">
+                    <option value="curly">Rizado (Dominante - R)</option>
+                    <option value="straight" selected>Lacio (Recesivo - r)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Alelo 2 - Textura</label>
+                <select id="hairTextureAllele2">
+                    <option value="curly">Rizado (Dominante - R)</option>
+                    <option value="straight" selected>Lacio (Recesivo - r)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <div class="value-display" id="hairTexturePhenotype">Genotipo: rr (Lacio)</div>
+            </div>
+            
+            <h2>👃 Forma de Nariz</h2>
+            
+            <div class="control-group">
+                <label>Alelo 1 - Nariz</label>
+                <select id="noseAllele1">
+                    <option value="prominent">Prominente/Grande (Dominante - N)</option>
+                    <option value="small" selected>Pequeña/Respingona (Recesivo - n)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Alelo 2 - Nariz</label>
+                <select id="noseAllele2">
+                    <option value="prominent">Prominente/Grande (Dominante - N)</option>
+                    <option value="small" selected>Pequeña/Respingona (Recesivo - n)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Ancho de Nariz: <span id="noseWidthVal">100</span>%</label>
+                <input type="range" id="noseWidth" min="70" max="130" value="100">
+                <div class="value-display" id="nosePhenotype">Genotipo: nn (Nariz Pequeña)</div>
+            </div>
+            
+            <h2>👄 Labios</h2>
+            
+            <div class="control-group">
+                <label>Alelo 1 - Grosor de Labios</label>
+                <select id="lipAllele1">
+                    <option value="thick">Gruesos (Dominante - L)</option>
+                    <option value="thin" selected>Delgados (Recesivo - l)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Alelo 2 - Grosor de Labios</label>
+                <select id="lipAllele2">
+                    <option value="thick">Gruesos (Dominante - L)</option>
+                    <option value="thin" selected>Delgados (Recesivo - l)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Color de Labios</label>
+                <input type="color" id="lipColor" value="#d17171">
+                <div class="value-display" id="lipPhenotype">Genotipo: ll (Labios Delgados)</div>
+            </div>
+            
+            <h2>👂 Lóbulo de la Oreja</h2>
+            
+            <div class="control-group">
+                <label>Alelo 1 - Lóbulo</label>
+                <select id="earlobeAllele1">
+                    <option value="free" selected>Libre/Separado (Dominante - E)</option>
+                    <option value="attached">Adherido (Recesivo - e)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Alelo 2 - Lóbulo</label>
+                <select id="earlobeAllele2">
+                    <option value="free" selected>Libre/Separado (Dominante - E)</option>
+                    <option value="attached">Adherido (Recesivo - e)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Tamaño de Orejas: <span id="earSizeVal">100</span>%</label>
+                <input type="range" id="earSize" min="70" max="130" value="100">
+                <div class="value-display" id="earlobePhenotype">Genotipo: EE (Lóbulo Libre)</div>
+            </div>
+            
+            <h2>💪 Altura</h2>
+            
+            <div class="control-group">
+                <label>Alelo 1 - Altura</label>
+                <select id="heightAllele1">
+                    <option value="tall" selected>Alto (Dominante - A)</option>
+                    <option value="short">Bajo (Recesivo - a)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Alelo 2 - Altura</label>
+                <select id="heightAllele2">
+                    <option value="tall" selected>Alto (Dominante - A)</option>
+                    <option value="short">Bajo (Recesivo - a)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Altura Resultante: <span id="heightVal">180</span> cm</label>
+                <input type="range" id="height" min="150" max="200" value="180" disabled>
+                <div class="value-display" id="heightPhenotype">Genotipo: AA (Altura Alta ~180cm)</div>
+            </div>
+            
+            <h2>🏋️ Complexión/Build</h2>
+            
+            <div class="control-group">
+                <label>Alelo 1 - Complexión</label>
+                <select id="buildAllele1">
+                    <option value="mesomorph" selected>Mesomorfo/Musculoso (Dominante - M)</option>
+                    <option value="ectomorph">Ectomorfo/Delgado (Recesivo - m)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Alelo 2 - Complexión</label>
+                <select id="buildAllele2">
+                    <option value="mesomorph" selected>Mesomorfo/Musculoso (Dominante - M)</option>
+                    <option value="ectomorph">Ectomorfo/Delgado (Recesivo - m)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Contextura: <span id="buildVal">70</span>%</label>
+                <input type="range" id="build" min="0" max="100" value="70" disabled>
+                <div class="value-display" id="buildPhenotype">Genotipo: MM (Musculoso)</div>
+            </div>
+            
+            <h2>🧬 MUTACIONES GENÉTICAS</h2>
+            
+            <div class="control-group">
+                <label>Seleccionar Mutación</label>
+                <select id="mutation">
+                    <option value="none">Sin mutación</option>
+                    <option value="mthfr">MTHFR (Metabolismo ácido fólico)</option>
+                    <option value="sickle">HbS - Anemia falciforme</option>
+                    <option value="cystic">CFTR - Fibrosis quística</option>
+                    <option value="blueeyes">OCA2/HERC2 - Ojos azules</option>
+                    <option value="lactose">LCT - Tolerancia lactosa adultos</option>
+                    <option value="heterochromia">Heterocromía del iris</option>
+                    <option value="polydactyly">Polidactilia (dedos extra)</option>
+                    <option value="freckles">MC1R - Pecas abundantes</option>
+                </select>
+            </div>
+            
+            <div class="control-group" id="mutationInfo" style="display: none; background: rgba(255, 100, 100, 0.1); border: 1px solid #ff6464;">
+                <label style="color: #ff6464;">📋 Información de la Mutación</label>
+                <p id="mutationDescription" style="font-size: 11px; line-height: 1.6; color: #ffb3b3; margin-top: 8px;"></p>
+            </div>
+            
+            <h2>🌍 FACTORES AMBIENTALES</h2>
+            
+            <div class="control-group">
+                <label>Ejercicio Físico</label>
+                <select id="exercise">
+                    <option value="daily">Realiza ejercicio a diario</option>
+                    <option value="sedentary">Tiene vida sedentaria</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Tatuajes</label>
+                <select id="tattoos">
+                    <option value="yes">Tiene tatuajes</option>
+                    <option value="no">No tiene tatuajes</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Piercing</label>
+                <select id="piercing">
+                    <option value="yes">Tiene piercing</option>
+                    <option value="no">No tiene piercing</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Cabello Teñido</label>
+                <select id="dyedHair">
+                    <option value="yes">Pelo teñido</option>
+                    <option value="no">Nunca se tiñó</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Bronceado</label>
+                <select id="tanned">
+                    <option value="yes">Piel bronceada</option>
+                    <option value="no">No bronceada</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Botox</label>
+                <select id="botox">
+                    <option value="yes">Posee Botox</option>
+                    <option value="no">No posee Botox</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Tratamiento Capilar</label>
+                <select id="hairTreatment">
+                    <option value="waves">Se hace ondas en peluquería</option>
+                    <option value="straightening">Se realiza planchado frecuente</option>
+                    <option value="none">No se toca el pelo</option>
+                </select>
+            </div>
+            
+            <h2>🧠 EPIGENÉTICA</h2>
+            
+            <div class="control-group">
+                <label>Factor Epigenético</label>
+                <select id="epigenetics">
+                    <option value="none">Sin factor epigenético</option>
+                    <option value="trauma">Miedo heredado (trauma familiar)</option>
+                    <option value="famine">Programación metabólica por escasez</option>
+                    <option value="toxins">Exposición a tóxicos en embarazo</option>
+                    <option value="smell">Herencia del miedo (olfato)</option>
+                    <option value="grief">Duelo no elaborado generacional</option>
+                </select>
+            </div>
+            
+            <div class="control-group" id="epigeneticsInfo" style="display: none; background: rgba(100, 200, 255, 0.1); border: 1px solid #64c8ff;">
+                <label style="color: #64c8ff;">📋 Información Epigenética</label>
+                <p id="epigeneticsDescription" style="font-size: 11px; line-height: 1.6; color: #b3e5fc; margin-top: 8px;"></p>
+            </div>
+            
+            <h2>📊 Cuadro de Punnett</h2>
+            
+            <div class="control-group">
+                <label>Ver Cruza Genética</label>
+                <select id="punnettTrait">
+                    <option value="skin">Color de Piel</option>
+                    <option value="eyes">Color de Ojos</option>
+                    <option value="hair">Color de Cabello</option>
+                    <option value="height">Altura</option>
+                    <option value="build">Complexión</option>
+                </select>
+                <button onclick="showPunnettSquare()" style="margin-top: 10px;">
+                    🧬 Generar Cuadro de Punnett
+                </button>
+            </div>
+            
+            <h2>👤 Características Adicionales</h2>
+            
+            <div class="control-group">
+                <label>Forma de la Cara</label>
+                <select id="faceShape">
+                    <option value="oval">Ovalada</option>
+                    <option value="round">Redonda</option>
+                    <option value="square">Cuadrada</option>
+                    <option value="heart">Corazón</option>
+                    <option value="diamond">Diamante</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Separación de Ojos: <span id="eyeSpacingVal">100</span>%</label>
+                <input type="range" id="eyeSpacing" min="80" max="120" value="100">
+            </div>
+            
+            <div class="control-group">
+                <label>Ancho de Boca: <span id="mouthWidthVal">100</span>%</label>
+                <input type="range" id="mouthWidth" min="70" max="130" value="100">
+            </div>
+            
+            <div class="control-group">
+                <label>Ancho de Hombros: <span id="shoulderWidthVal">100</span>%</label>
+                <input type="range" id="shoulderWidth" min="70" max="140" value="100">
+            </div>
+            
+            <div class="control-group">
+                <label>Desarrollo Pectoral: <span id="chestVal">50</span>%</label>
+                <input type="range" id="chest" min="0" max="100" value="50">
+            </div>
+            
+            <div class="control-group">
+                <label>Cintura: <span id="waistVal">50</span>%</label>
+                <input type="range" id="waist" min="0" max="100" value="50">
+            </div>
+            
+            <div class="control-group">
+                <label>Grosor de Brazos: <span id="armThicknessVal">50</span>%</label>
+                <input type="range" id="armThickness" min="0" max="100" value="50">
+            </div>
+            
+            <div class="control-group">
+                <label>Longitud de Brazos: <span id="armLengthVal">100</span>%</label>
+                <input type="range" id="armLength" min="80" max="120" value="100">
+            </div>
+            
+            <div class="control-group">
+                <label>Grosor de Piernas: <span id="legThicknessVal">50</span>%</label>
+                <input type="range" id="legThickness" min="0" max="100" value="50">
+            </div>
+            
+            <div class="control-group">
+                <label>Longitud de Piernas: <span id="legLengthVal">100</span>%</label>
+                <input type="range" id="legLength" min="80" max="120" value="100">
+            </div>
+            
+            <h2>💡 Iluminación</h2>
+            
+            <div class="control-group">
+                <label>Intensidad de Luz: <span id="lightIntensityVal">100</span>%</label>
+                <input type="range" id="lightIntensity" min="50" max="150" value="100">
+            </div>
+            
+            <div class="control-group">
+                <label>Ángulo de Luz: <span id="lightAngleVal">45</span>°</label>
+                <input type="range" id="lightAngle" min="0" max="360" value="45">
+            </div>
+            
+            <h2>🎭 Expresión</h2>
+            
+            <div class="control-group">
+                <label>Expresión Facial</label>
+                <select id="expression">
+                    <option value="neutral">Neutral</option>
+                    <option value="happy">Feliz</option>
+                    <option value="sad">Triste</option>
+                    <option value="surprised">Sorprendido</option>
+                    <option value="angry">Enojado</option>
+                </select>
+            </div>
+            
+            <h2>🎨 Detalles Avanzados</h2>
+            
+            <div class="control-group">
+                <label>Detalle de Piel: <span id="skinDetailVal">100</span>%</label>
+                <input type="range" id="skinDetail" min="0" max="200" value="100">
+            </div>
+            
+            <div class="control-group">
+                <label>Sombreado: <span id="shadingVal">100</span>%</label>
+                <input type="range" id="shading" min="0" max="200" value="100">
+            </div>
+            
+            <div class="control-group">
+                <label>Edad Aparente: <span id="ageVal">30</span> años</label>
+                <input type="range" id="age" min="18" max="80" value="30">
+            </div>
+            
+            <div class="control-group">
+                <label>Vascularidad: <span id="vascularityVal">30</span>%</label>
+                <input type="range" id="vascularity" min="0" max="100" value="30">
+            </div>
+            
+            <button onclick="renderModel()">🔄 RENDERIZAR MODELO</button>
+            <button onclick="randomizeAll()">🎲 ALEATORIZAR TODO</button>
+            <button onclick="resetDefault()">↺ RESTABLECER</button>
+            <button onclick="exportImage()">💾 EXPORTAR IMAGEN</button>
+        </div>
+        
+        <div class="canvas-area">
+            <canvas id="humanCanvas" width="600" height="900"></canvas>
+            
+            <div class="render-info">
+                <span id="renderStatus">✅ Listo para renderizar</span> | 
+                Tiempo: <span id="renderTime">0ms</span>
+            </div>
+        </div>
     </div>
-    <script src="app.js"></script>
+    
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h2 style="color: #00d4ff;">Renderizando Modelo...</h2>
+            <p style="color: #4dd0e1; margin-top: 10px;">Procesando capas anatómicas</p>
+        </div>
+    </div>
+
+    <script>
+        // ==================== CONFIGURACIÓN GLOBAL ====================
+        const canvas = document.getElementById('humanCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let modelConfig = {
+            // Alelos genéticos
+            skinAllele1: 'light',
+            skinAllele2: 'light',
+            eyeAllele1: 'green',
+            eyeAllele2: 'green',
+            hairAllele1: 'black',
+            hairAllele2: 'black',
+            hairTextureAllele1: 'straight',
+            hairTextureAllele2: 'straight',
+            noseAllele1: 'small',
+            noseAllele2: 'small',
+            lipAllele1: 'thin',
+            lipAllele2: 'thin',
+            earlobeAllele1: 'free',
+            earlobeAllele2: 'free',
+            heightAllele1: 'tall',
+            heightAllele2: 'tall',
+            buildAllele1: 'mesomorph',
+            buildAllele2: 'mesomorph',
+            
+            // Fenotipos resultantes (calculados)
+            skinTone: '#d4a574',
+            eyeColor: '#4a7c59',
+            hairColor: '#3d2817',
+            lipColor: '#d17171',
+            
+            // Factores ambientales
+            exercise: 'daily',
+            tattoos: 'no',
+            piercing: 'no',
+            dyedHair: 'no',
+            tanned: 'no',
+            botox: 'no',
+            hairTreatment: 'none',
+            
+            // Mutaciones
+            mutation: 'none',
+            
+            // Epigenética
+            epigenetics: 'none',
+            
+            // Otros controles
+            faceShape: 'oval',
+            eyeSize: 100,
+            eyeSpacing: 100,
+            noseWidth: 100,
+            mouthWidth: 100,
+            earSize: 100,
+            hairStyle: 'short',
+            height: 170,
+            build: 50,
+            shoulderWidth: 100,
+            chest: 50,
+            waist: 50,
+            armThickness: 50,
+            armLength: 100,
+            legThickness: 50,
+            legLength: 100,
+            lightIntensity: 100,
+            lightAngle: 45,
+            expression: 'neutral',
+            skinDetail: 100,
+            shading: 100,
+            age: 30,
+            vascularity: 30,
+            showSkeleton: true,
+            showMuscles: true,
+            showSkin: true,
+            showVeins: true,
+            showShading: true
+        };
+        
+        // ==================== FUNCIONES GENÉTICAS ====================
+        
+        function calculatePhenotypes() {
+            // PIEL: Herencia poligénica
+            const skin1 = modelConfig.skinAllele1;
+            const skin2 = modelConfig.skinAllele2;
+            if (skin1 === 'dark' && skin2 === 'dark') {
+                modelConfig.skinTone = '#4a2511'; // DD - Oscuro
+                document.getElementById('skinPhenotype').textContent = 'Genotipo: DD (Homocigoto Dominante - Piel Oscura)';
+            } else if ((skin1 === 'dark' && skin2 === 'light') || (skin1 === 'light' && skin2 === 'dark')) {
+                modelConfig.skinTone = '#8d5524'; // Dr - Intermedio
+                document.getElementById('skinPhenotype').textContent = 'Genotipo: Dr (Heterocigoto - Piel Morena)';
+            } else {
+                modelConfig.skinTone = '#ffd4a3'; // rr - Claro
+                document.getElementById('skinPhenotype').textContent = 'Genotipo: rr (Homocigoto Recesivo - Piel Clara)';
+            }
+            document.getElementById('skinTone').value = modelConfig.skinTone;
+            
+            // OJOS: Herencia codominante
+            const eye1 = modelConfig.eyeAllele1;
+            const eye2 = modelConfig.eyeAllele2;
+            if (eye1 === 'brown' || eye2 === 'brown') {
+                modelConfig.eyeColor = '#3d2817'; // Café dominante
+                document.getElementById('eyePhenotype').textContent = 'Genotipo: B_ (Ojos Café/Negro - Dominante)';
+            } else if (eye1 === 'green' && eye2 === 'green') {
+                modelConfig.eyeColor = '#4a7c59'; // Verde
+                document.getElementById('eyePhenotype').textContent = 'Genotipo: GG (Ojos Verdes)';
+            } else if ((eye1 === 'green' && eye2 === 'blue') || (eye1 === 'blue' && eye2 === 'green')) {
+                modelConfig.eyeColor = '#5a8c6f'; // Verde-azul
+                document.getElementById('eyePhenotype').textContent = 'Genotipo: Gb (Ojos Verde-Azulados)';
+            } else {
+                modelConfig.eyeColor = '#5a8fb8'; // Azul
+                document.getElementById('eyePhenotype').textContent = 'Genotipo: bb (Ojos Azules - Recesivo)';
+            }
+            document.getElementById('eyeColor').value = modelConfig.eyeColor;
+            
+            // CABELLO: Negro > Castaño > Rubio/Rojo
+            const hair1 = modelConfig.hairAllele1;
+            const hair2 = modelConfig.hairAllele2;
+            if (hair1 === 'black' || hair2 === 'black') {
+                modelConfig.hairColor = '#1c1c1c'; // Negro dominante
+                document.getElementById('hairPhenotype').textContent = 'Genotipo: N_ (Cabello Negro - Dominante)';
+            } else if (hair1 === 'brown' || hair2 === 'brown') {
+                modelConfig.hairColor = '#6b4423'; // Castaño
+                document.getElementById('hairPhenotype').textContent = 'Genotipo: C_ (Cabello Castaño)';
+            } else if (hair1 === 'blonde' && hair2 === 'blonde') {
+                modelConfig.hairColor = '#e6c896'; // Rubio
+                document.getElementById('hairPhenotype').textContent = 'Genotipo: rr (Cabello Rubio - Recesivo)';
+            } else if (hair1 === 'red' || hair2 === 'red') {
+                modelConfig.hairColor = '#b8523f'; // Pelirrojo
+                document.getElementById('hairPhenotype').textContent = 'Genotipo: pp/rp (Cabello Pelirrojo)';
+            }
+            document.getElementById('hairColor').value = modelConfig.hairColor;
+            
+            // TEXTURA DE CABELLO
+            const texture1 = modelConfig.hairTextureAllele1;
+            const texture2 = modelConfig.hairTextureAllele2;
+            if (texture1 === 'curly' || texture2 === 'curly') {
+                document.getElementById('hairTexturePhenotype').textContent = 'Genotipo: R_ (Cabello Rizado - Dominante)';
+            } else {
+                document.getElementById('hairTexturePhenotype').textContent = 'Genotipo: rr (Cabello Lacio - Recesivo)';
+            }
+            
+            // NARIZ
+            const nose1 = modelConfig.noseAllele1;
+            const nose2 = modelConfig.noseAllele2;
+            if (nose1 === 'prominent' || nose2 === 'prominent') {
+                modelConfig.noseWidth = 120;
+                document.getElementById('nosePhenotype').textContent = 'Genotipo: N_ (Nariz Prominente - Dominante)';
+            } else {
+                modelConfig.noseWidth = 90;
+                document.getElementById('nosePhenotype').textContent = 'Genotipo: nn (Nariz Pequeña - Recesivo)';
+            }
+            document.getElementById('noseWidth').value = modelConfig.noseWidth;
+            document.getElementById('noseWidthVal').textContent = modelConfig.noseWidth;
+            
+            // LABIOS
+            const lip1 = modelConfig.lipAllele1;
+            const lip2 = modelConfig.lipAllele2;
+            if (lip1 === 'thick' || lip2 === 'thick') {
+                // Labios gruesos son dominantes
+                document.getElementById('lipPhenotype').textContent = 'Genotipo: L_ (Labios Gruesos - Dominante)';
+            } else {
+                document.getElementById('lipPhenotype').textContent = 'Genotipo: ll (Labios Delgados - Recesivo)';
+            }
+            
+            // LÓBULO DE OREJA
+            const ear1 = modelConfig.earlobeAllele1;
+            const ear2 = modelConfig.earlobeAllele2;
+            if (ear1 === 'free' || ear2 === 'free') {
+                document.getElementById('earlobePhenotype').textContent = 'Genotipo: E_ (Lóbulo Libre - Dominante)';
+            } else {
+                document.getElementById('earlobePhenotype').textContent = 'Genotipo: ee (Lóbulo Adherido - Recesivo)';
+            }
+            
+            // ALTURA
+            const height1 = modelConfig.heightAllele1;
+            const height2 = modelConfig.heightAllele2;
+            if (height1 === 'tall' && height2 === 'tall') {
+                modelConfig.height = 185; // AA
+                document.getElementById('heightPhenotype').textContent = 'Genotipo: AA (Altura Alta ~185cm - Dominante)';
+            } else if ((height1 === 'tall' && height2 === 'short') || (height1 === 'short' && height2 === 'tall')) {
+                modelConfig.height = 170; // Aa
+                document.getElementById('heightPhenotype').textContent = 'Genotipo: Aa (Altura Media ~170cm - Heterocigoto)';
+            } else {
+                modelConfig.height = 160; // aa
+                document.getElementById('heightPhenotype').textContent = 'Genotipo: aa (Altura Baja ~160cm - Recesivo)';
+            }
+            document.getElementById('height').value = modelConfig.height;
+            document.getElementById('heightVal').textContent = modelConfig.height;
+            
+            // COMPLEXIÓN
+            const build1 = modelConfig.buildAllele1;
+            const build2 = modelConfig.buildAllele2;
+            if (build1 === 'mesomorph' && build2 === 'mesomorph') {
+                modelConfig.build = 75; // MM
+                document.getElementById('buildPhenotype').textContent = 'Genotipo: MM (Complexión Musculosa - Dominante)';
+            } else if ((build1 === 'mesomorph' && build2 === 'ectomorph') || (build1 === 'ectomorph' && build2 === 'mesomorph')) {
+                modelConfig.build = 50; // Mm
+                document.getElementById('buildPhenotype').textContent = 'Genotipo: Mm (Complexión Normal - Heterocigoto)';
+            } else {
+                modelConfig.build = 25; // mm
+                document.getElementById('buildPhenotype').textContent = 'Genotipo: mm (Complexión Delgada - Recesivo)';
+            }
+            document.getElementById('build').value = modelConfig.build;
+            document.getElementById('buildVal').textContent = modelConfig.build;
+        }
+        
+        function showPunnettSquare() {
+            const trait = document.getElementById('punnettTrait').value;
+            let allele1Parent1, allele2Parent1, allele1Parent2, allele2Parent2;
+            let traitName, alleleNames;
+            
+            switch(trait) {
+                case 'skin':
+                    allele1Parent1 = modelConfig.skinAllele1;
+                    allele2Parent1 = allele1Parent1;
+                    allele1Parent2 = modelConfig.skinAllele2;
+                    allele2Parent2 = allele1Parent2;
+                    traitName = 'Color de Piel';
+                    alleleNames = { dark: 'D (Oscuro)', light: 'r (Claro)' };
+                    break;
+                case 'eyes':
+                    allele1Parent1 = modelConfig.eyeAllele1;
+                    allele2Parent1 = allele1Parent1;
+                    allele1Parent2 = modelConfig.eyeAllele2;
+                    allele2Parent2 = allele1Parent2;
+                    traitName = 'Color de Ojos';
+                    alleleNames = { brown: 'B (Café)', green: 'G (Verde)', blue: 'b (Azul)' };
+                    break;
+                case 'hair':
+                    allele1Parent1 = modelConfig.hairAllele1;
+                    allele2Parent1 = allele1Parent1;
+                    allele1Parent2 = modelConfig.hairAllele2;
+                    allele2Parent2 = allele1Parent2;
+                    traitName = 'Color de Cabello';
+                    alleleNames = { black: 'N (Negro)', brown: 'C (Castaño)', blonde: 'r (Rubio)', red: 'p (Pelirrojo)' };
+                    break;
+                case 'height':
+                    allele1Parent1 = modelConfig.heightAllele1;
+                    allele2Parent1 = allele1Parent1;
+                    allele1Parent2 = modelConfig.heightAllele2;
+                    allele2Parent2 = allele1Parent2;
+                    traitName = 'Altura';
+                    alleleNames = { tall: 'A (Alto)', short: 'a (Bajo)' };
+                    break;
+                case 'build':
+                    allele1Parent1 = modelConfig.buildAllele1;
+                    allele2Parent1 = allele1Parent1;
+                    allele1Parent2 = modelConfig.buildAllele2;
+                    allele2Parent2 = allele1Parent2;
+                    traitName = 'Complexión';
+                    alleleNames = { mesomorph: 'M (Musculoso)', ectomorph: 'm (Delgado)' };
+                    break;
+            }
+            
+            const offspring1 = allele1Parent1.charAt(0).toUpperCase() + allele1Parent2.charAt(0).toUpperCase();
+            const offspring2 = allele1Parent1.charAt(0).toUpperCase() + allele2Parent2.charAt(0).toUpperCase();
+            const offspring3 = allele2Parent1.charAt(0).toUpperCase() + allele1Parent2.charAt(0).toUpperCase();
+            const offspring4 = allele2Parent1.charAt(0).toUpperCase() + allele2Parent2.charAt(0).toUpperCase();
+            
+            alert(`
+🧬 CUADRO DE PUNNETT - ${traitName}
+
+Progenitor 1: ${alleleNames[allele1Parent1]}
+Progenitor 2: ${alleleNames[allele1Parent2]}
+
+Descendencia Posible:
+• 25% - ${offspring1}
+• 25% - ${offspring2}
+• 25% - ${offspring3}
+• 25% - ${offspring4}
+
+Nota: Este es un modelo simplificado. La herencia real puede ser más compleja.
+            `);
+        }
+        
+        let renderStats = {
+            vertices: 0,
+            polygons: 0,
+            renderTime: 0
+        };
+
+        // ==================== INICIALIZACIÓN ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeControls();
+            setupEventListeners();
+            calculatePhenotypes(); // Calcular fenotipos iniciales
+            renderModel();
+        });
+
+        function initializeControls() {
+            Object.keys(modelConfig).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (element.type === 'range') {
+                        element.value = modelConfig[key];
+                        updateValueDisplay(key);
+                    } else if (element.type === 'color') {
+                        element.value = modelConfig[key];
+                    } else if (element.tagName === 'SELECT') {
+                        element.value = modelConfig[key];
+                    } else if (element.type === 'checkbox') {
+                        element.checked = modelConfig[key];
+                    }
+                }
+            });
+        }
+
+        function setupEventListeners() {
+            const inputs = document.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                const eventType = input.type === 'range' ? 'input' : 'change';
+                input.addEventListener(eventType, function() {
+                    const id = this.id;
+                    if (id in modelConfig) {
+                        if (this.type === 'checkbox') {
+                            modelConfig[id] = this.checked;
+                        } else if (this.type === 'range') {
+                            modelConfig[id] = parseFloat(this.value);
+                            updateValueDisplay(id);
+                        } else {
+                            modelConfig[id] = this.value;
+                        }
+                        
+                        // Si cambia un alelo, recalcular fenotipos
+                        if (id.includes('Allele')) {
+                            calculatePhenotypes();
+                        }
+                    }
+                });
+            });
+        }
+
+        function updateValueDisplay(id) {
+            const displayElement = document.getElementById(id + 'Val');
+            if (displayElement) {
+                displayElement.textContent = Math.round(modelConfig[id]);
+            }
+        }
+
+        // ==================== FUNCIONES DE UTILIDAD ====================
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : {r: 212, g: 165, b: 116};
+        }
+
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => {
+                const hex = Math.max(0, Math.min(255, Math.round(x))).toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }).join('');
+        }
+
+        function adjustColor(hex, amount) {
+            const rgb = hexToRgb(hex);
+            return rgbToHex(rgb.r + amount, rgb.g + amount, rgb.b + amount);
+        }
+
+        function blendColors(color1, color2, weight) {
+            const rgb1 = hexToRgb(color1);
+            const rgb2 = hexToRgb(color2);
+            return rgbToHex(
+                rgb1.r * (1 - weight) + rgb2.r * weight,
+                rgb1.g * (1 - weight) + rgb2.g * weight,
+                rgb1.b * (1 - weight) + rgb2.b * weight
+            );
+        }
+
+        // ==================== MOTOR DE RENDERIZADO ====================
+        function renderModel() {
+            const startTime = performance.now();
+            showLoading(true);
+            
+            // Calcular fenotipos antes de renderizar
+            calculatePhenotypes();
+            
+            setTimeout(() => {
+                try {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    renderStats.vertices = 0;
+                    renderStats.polygons = 0;
+                    
+                    // Calcular proporciones del cuerpo
+                    const proportions = calculateBodyProportions();
+                    
+                    // Renderizar capas en orden
+                    if (modelConfig.showSkeleton) {
+                        renderSkeleton(proportions);
+                    }
+                    
+                    if (modelConfig.showMuscles) {
+                        renderMuscles(proportions);
+                    }
+                    
+                    if (modelConfig.showSkin) {
+                        renderSkin(proportions);
+                    }
+                    
+                    if (modelConfig.showVeins) {
+                        renderVascularSystem(proportions);
+                    }
+                    
+                    if (modelConfig.showShading) {
+                        applyLightingAndShading(proportions);
+                    }
+                    
+                    // Renderizar detalles finales
+                    renderFinalDetails(proportions);
+                    
+                    // Actualizar estadísticas
+                    const endTime = performance.now();
+                    renderStats.renderTime = Math.round(endTime - startTime);
+                    updateStats();
+                    
+                    showLoading(false);
+                } catch (error) {
+                    console.error('Error al renderizar:', error);
+                    showLoading(false);
+                    alert('Error al renderizar el modelo. Revisa la consola para más detalles.');
+                }
+            }, 100);
+        }
+
+        function showLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.style.display = show ? 'flex' : 'none';
+        }
+
+        function updateStats() {
+            const vertexEl = document.getElementById('vertexCount');
+            const polyEl = document.getElementById('polyCount');
+            const timeEl = document.getElementById('renderTime');
+            const statusEl = document.getElementById('renderStatus');
+            
+            if (vertexEl) vertexEl.textContent = renderStats.vertices;
+            if (polyEl) polyEl.textContent = renderStats.polygons;
+            if (timeEl) timeEl.textContent = renderStats.renderTime + 'ms';
+            if (statusEl) statusEl.textContent = '✅ Renderizado completo';
+        }
+
+        // ==================== CÁLCULO DE PROPORCIONES ====================
+        function calculateBodyProportions() {
+            const baseHeight = canvas.height * 0.85;
+            const scale = (modelConfig.height || 170) / 170;
+            const totalHeight = baseHeight * scale;
+            
+            // Proporciones estándar del cuerpo humano (en cabezas)
+            const headHeight = totalHeight / 8;
+            const headSize = headHeight * 1;
+            
+            const centerX = canvas.width / 2;
+            const startY = canvas.height * 0.05;
+            
+            return {
+                centerX: centerX,
+                startY: startY,
+                headHeight: headSize,
+                headWidth: headSize * 0.7,
+                neckHeight: headSize * 0.3,
+                shoulderY: startY + headSize + headSize * 0.3,
+                shoulderWidth: headSize * 2.2 * ((modelConfig.shoulderWidth || 100) / 100),
+                chestHeight: headSize * 1.2,
+                waistY: startY + headSize + headSize * 0.3 + headSize * 1.2 + headSize * 0.5,
+                waistWidth: headSize * 1.4 * ((modelConfig.waist || 50) / 100),
+                hipHeight: headSize * 0.8,
+                legLength: totalHeight * 0.48 * ((modelConfig.legLength || 100) / 100),
+                armLength: headSize * 2.5 * ((modelConfig.armLength || 100) / 100),
+                torsoLength: headSize * 2.5,
+                scale: scale
+            };
+        }
+
+        // ==================== RENDERIZADO DE ESQUELETO ====================
+        function renderSkeleton(props) {
+            ctx.save();
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.lineWidth = 3;
+            
+            // Cráneo
+            ctx.beginPath();
+            ctx.ellipse(props.centerX, props.startY + props.headHeight / 2, 
+                       props.headWidth / 2, props.headHeight / 2, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            renderStats.polygons += 1;
+            
+            // Columna vertebral
+            const spineStart = props.startY + props.headHeight;
+            const spineEnd = props.waistY + props.hipHeight;
+            ctx.beginPath();
+            ctx.moveTo(props.centerX, spineStart);
+            ctx.lineTo(props.centerX, spineEnd);
+            ctx.stroke();
+            
+            // Vértebras (detalle)
+            for (let i = 0; i < 24; i++) {
+                const y = spineStart + (spineEnd - spineStart) * (i / 24);
+                ctx.beginPath();
+                ctx.arc(props.centerX, y, 3, 0, Math.PI * 2);
+                ctx.fill();
+                renderStats.vertices += 1;
+            }
+            
+            // Clavículas
+            ctx.beginPath();
+            ctx.moveTo(props.centerX - props.shoulderWidth / 2, props.shoulderY);
+            ctx.lineTo(props.centerX, props.shoulderY - 10);
+            ctx.lineTo(props.centerX + props.shoulderWidth / 2, props.shoulderY);
+            ctx.stroke();
+            
+            // Caja torácica (costillas)
+            for (let i = 0; i < 12; i++) {
+                const y = props.shoulderY + 10 + i * (props.chestHeight / 12);
+                const width = props.shoulderWidth * 0.9 * (1 - Math.abs(i - 6) / 12);
+                ctx.beginPath();
+                ctx.ellipse(props.centerX, y, width / 2, 8, 0, 0, Math.PI * 2);
+                ctx.stroke();
+                renderStats.polygons += 1;
+            }
+            
+            // Pelvis
+            const pelvisY = props.waistY + props.hipHeight / 2;
+            ctx.beginPath();
+            ctx.ellipse(props.centerX, pelvisY, props.waistWidth / 2, props.hipHeight / 3, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Brazos (húmero, radio, cúbito)
+            const armY = props.shoulderY + 20;
+            const elbowY = armY + props.armLength * 0.45;
+            const wristY = elbowY + props.armLength * 0.45;
+            
+            // Brazo izquierdo
+            ctx.beginPath();
+            ctx.moveTo(props.centerX - props.shoulderWidth / 2, armY);
+            ctx.lineTo(props.centerX - props.shoulderWidth / 2 - 40, elbowY);
+            ctx.lineTo(props.centerX - props.shoulderWidth / 2 - 50, wristY);
+            ctx.stroke();
+            
+            // Brazo derecho
+            ctx.beginPath();
+            ctx.moveTo(props.centerX + props.shoulderWidth / 2, armY);
+            ctx.lineTo(props.centerX + props.shoulderWidth / 2 + 40, elbowY);
+            ctx.lineTo(props.centerX + props.shoulderWidth / 2 + 50, wristY);
+            ctx.stroke();
+            
+            // Piernas (fémur, tibia, peroné)
+            const hipY = props.waistY + props.hipHeight;
+            const kneeY = hipY + props.legLength * 0.5;
+            const ankleY = kneeY + props.legLength * 0.5;
+            
+            // Pierna izquierda
+            ctx.beginPath();
+            ctx.moveTo(props.centerX - props.waistWidth / 4, hipY);
+            ctx.lineTo(props.centerX - props.waistWidth / 5, kneeY);
+            ctx.lineTo(props.centerX - props.waistWidth / 5, ankleY);
+            ctx.stroke();
+            
+            // Pierna derecha
+            ctx.beginPath();
+            ctx.moveTo(props.centerX + props.waistWidth / 4, hipY);
+            ctx.lineTo(props.centerX + props.waistWidth / 5, kneeY);
+            ctx.lineTo(props.centerX + props.waistWidth / 5, ankleY);
+            ctx.stroke();
+            
+            ctx.restore();
+        }
+
+        // ==================== RENDERIZADO DE MÚSCULOS ====================
+        function renderMuscles(props) {
+            ctx.save();
+            const muscleColor = adjustColor(modelConfig.skinTone, -40);
+            const muscleDefinition = modelConfig.build / 100;
+            
+            // CABEZA Y CUELLO
+            // Músculos del cuello (esternocleidomastoideo)
+            ctx.fillStyle = `rgba(${hexToRgb(muscleColor).r}, ${hexToRgb(muscleColor).g}, ${hexToRgb(muscleColor).b}, 0.6)`;
+            const neckY = props.startY + props.headHeight;
+            
+            // Cuello izquierdo
+            ctx.beginPath();
+            ctx.moveTo(props.centerX - props.headWidth / 4, neckY);
+            ctx.quadraticCurveTo(props.centerX - props.shoulderWidth / 4, neckY + props.neckHeight / 2,
+                                props.centerX - props.shoulderWidth / 2 + 20, props.shoulderY);
+            ctx.lineTo(props.centerX - props.shoulderWidth / 4, props.shoulderY - 10);
+            ctx.lineTo(props.centerX - props.headWidth / 4, neckY + props.neckHeight / 2);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Cuello derecho
+            ctx.beginPath();
+            ctx.moveTo(props.centerX + props.headWidth / 4, neckY);
+            ctx.quadraticCurveTo(props.centerX + props.shoulderWidth / 4, neckY + props.neckHeight / 2,
+                                props.centerX + props.shoulderWidth / 2 - 20, props.shoulderY);
+            ctx.lineTo(props.centerX + props.shoulderWidth / 4, props.shoulderY - 10);
+            ctx.lineTo(props.centerX + props.headWidth / 4, neckY + props.neckHeight / 2);
+            ctx.closePath();
+            ctx.fill();
+            renderStats.polygons += 2;
+            
+            // HOMBROS (Deltoides)
+            const shoulderRadius = 50 * (1 + muscleDefinition * 0.5);
+            
+            // Hombro izquierdo
+            ctx.beginPath();
+            ctx.arc(props.centerX - props.shoulderWidth / 2, props.shoulderY, shoulderRadius, 0, Math.PI);
+            ctx.fill();
+            
+            // Hombro derecho
+            ctx.beginPath();
+            ctx.arc(props.centerX + props.shoulderWidth / 2, props.shoulderY, shoulderRadius, 0, Math.PI);
+            ctx.fill();
+            renderStats.polygons += 2;
+            
+            // PECHO (Pectorales)
+            const chestDevelopment = modelConfig.chest / 100;
+            const pectoralHeight = props.chestHeight * 0.7;
+            const pectoralWidth = props.shoulderWidth * 0.4;
+            
+            // Pectoral izquierdo
+            ctx.beginPath();
+            ctx.ellipse(props.centerX - props.shoulderWidth / 4, props.shoulderY + pectoralHeight / 2,
+                       pectoralWidth / 2 * (1 + chestDevelopment * 0.5), 
+                       pectoralHeight / 2 * (1 + chestDevelopment * 0.3),
+                       -0.2, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Pectoral derecho
+            ctx.beginPath();
+            ctx.ellipse(props.centerX + props.shoulderWidth / 4, props.shoulderY + pectoralHeight / 2,
+                       pectoralWidth / 2 * (1 + chestDevelopment * 0.5), 
+                       pectoralHeight / 2 * (1 + chestDevelopment * 0.3),
+                       0.2, 0, Math.PI * 2);
+            ctx.fill();
+            renderStats.polygons += 2;
+            
+            // ABDOMINALES (Rectus abdominis)
+            const absY = props.shoulderY + props.chestHeight;
+            const absHeight = props.torsoLength - props.chestHeight;
+            const absWidth = props.shoulderWidth * 0.3;
+            
+            for (let i = 0; i < 6; i++) {
+                const row = Math.floor(i / 2);
+                const col = i % 2;
+                const absX = props.centerX + (col === 0 ? -absWidth / 3 : absWidth / 3);
+                const absYPos = absY + row * (absHeight / 3);
+                
+                ctx.globalAlpha = 0.5 + muscleDefinition * 0.3;
+                ctx.beginPath();
+                ctx.ellipse(absX, absYPos, absWidth / 4, absHeight / 8, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+                renderStats.polygons += 1;
+            }
+            
+            // OBLICUOS
+            ctx.beginPath();
+            ctx.moveTo(props.centerX - props.shoulderWidth / 3, absY);
+            ctx.quadraticCurveTo(props.centerX - props.waistWidth / 2 - 20, absY + absHeight / 2,
+                                props.centerX - props.waistWidth / 2, props.waistY);
+            ctx.lineTo(props.centerX - props.shoulderWidth / 3 + 20, props.waistY - 20);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.moveTo(props.centerX + props.shoulderWidth / 3, absY);
+            ctx.quadraticCurveTo(props.centerX + props.waistWidth / 2 + 20, absY + absHeight / 2,
+                                props.centerX + props.waistWidth / 2, props.waistY);
+            ctx.lineTo(props.centerX + props.shoulderWidth / 3 - 20, props.waistY - 20);
+            ctx.closePath();
+            ctx.fill();
+            
+            // BRAZOS
+            renderArmMuscles(props, 'left');
+            renderArmMuscles(props, 'right');
+            
+            // PIERNAS
+            renderLegMuscles(props, 'left');
+            renderLegMuscles(props, 'right');
+            
+            ctx.restore();
+        }
+
+        function renderArmMuscles(props, side) {
+            const multiplier = side === 'left' ? -1 : 1;
+            const baseX = props.centerX + multiplier * props.shoulderWidth / 2;
+            const armThickness = 30 * (modelConfig.armThickness / 50) * (1 + modelConfig.armMuscle / 100);
+            
+            const shoulderY = props.shoulderY + 20;
+            const elbowY = shoulderY + props.armLength * 0.45;
+            const wristY = elbowY + props.armLength * 0.45;
+            const elbowX = baseX + multiplier * 40;
+            const wristX = baseX + multiplier * 50;
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Bíceps
+            ctx.beginPath();
+            ctx.ellipse(baseX + multiplier * 20, shoulderY + props.armLength * 0.25,
+                       armThickness * 0.6, props.armLength * 0.2, 
+                       multiplier * 0.3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Tríceps
+            ctx.globalAlpha = 0.7;
+            ctx.beginPath();
+            ctx.ellipse(baseX + multiplier * 25, shoulderY + props.armLength * 0.25,
+                       armThickness * 0.5, props.armLength * 0.22, 
+                       multiplier * 0.4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+            
+            // Antebrazo (flexores y extensores)
+            ctx.beginPath();
+            ctx.moveTo(elbowX - multiplier * armThickness / 2, elbowY);
+            ctx.quadraticCurveTo(elbowX + multiplier * 5, elbowY + props.armLength * 0.2,
+                                wristX - multiplier * armThickness / 3, wristY);
+            ctx.lineTo(wristX + multiplier * armThickness / 3, wristY);
+            ctx.quadraticCurveTo(elbowX - multiplier * 5, elbowY + props.armLength * 0.2,
+                                elbowX + multiplier * armThickness / 2, elbowY);
+            ctx.closePath();
+            ctx.fill();
+            
+            renderStats.polygons += 3;
+        }
+
+        function renderLegMuscles(props, side) {
+            const multiplier = side === 'left' ? -1 : 1;
+            const hipY = props.waistY + props.hipHeight;
+            const kneeY = hipY + props.legLength * 0.5;
+            const ankleY = kneeY + props.legLength * 0.5;
+            
+            const hipX = props.centerX + multiplier * props.waistWidth / 4;
+            const kneeX = props.centerX + multiplier * props.waistWidth / 5;
+            const ankleX = kneeX;
+            
+            const legThickness = 50 * (modelConfig.legThickness / 50);
+            const calfSize = 35 * (modelConfig.calf / 50);
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Cuádriceps (4 cabezas)
+            ctx.beginPath();
+            ctx.ellipse(hipX, hipY + props.legLength * 0.2,
+                       legThickness * 0.7, props.legLength * 0.25,
+                       0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Isquiotibiales (parte trasera del muslo)
+            ctx.globalAlpha = 0.7;
+            ctx.beginPath();
+            ctx.ellipse(hipX, hipY + props.legLength * 0.22,
+                       legThickness * 0.6, props.legLength * 0.23,
+                       0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+            
+            // Pantorrilla (gastrocnemio)
+            ctx.beginPath();
+            ctx.ellipse(kneeX, kneeY + props.legLength * 0.2,
+                       calfSize * 0.8, props.legLength * 0.15,
+                       0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Sóleo (músculo profundo de la pantorrilla)
+            ctx.globalAlpha = 0.6;
+            ctx.beginPath();
+            ctx.ellipse(kneeX, kneeY + props.legLength * 0.25,
+                       calfSize * 0.7, props.legLength * 0.12,
+                       0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+            
+            // Tibial anterior
+            ctx.beginPath();
+            ctx.ellipse(kneeX + multiplier * 10, kneeY + props.legLength * 0.15,
+                       calfSize * 0.3, props.legLength * 0.2,
+                       0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            renderStats.polygons += 5;
+        }
+
+        // ==================== RENDERIZADO DE PIEL ====================
+        function renderSkin(props) {
+            ctx.save();
+            
+            const skinColor = modelConfig.skinTone;
+            const skinRgb = hexToRgb(skinColor);
+            
+            // CABEZA
+            renderHead(props, skinColor);
+            
+            // CUELLO
+            ctx.fillStyle = skinColor;
+            const neckY = props.startY + props.headHeight;
+            ctx.beginPath();
+            ctx.moveTo(props.centerX - props.headWidth / 3, neckY);
+            ctx.lineTo(props.centerX - props.shoulderWidth / 3, props.shoulderY);
+            ctx.lineTo(props.centerX + props.shoulderWidth / 3, props.shoulderY);
+            ctx.lineTo(props.centerX + props.headWidth / 3, neckY);
+            ctx.closePath();
+            ctx.fill();
+            
+            // TORSO
+            const torsoGradient = ctx.createLinearGradient(props.centerX, props.shoulderY, 
+                                                           props.centerX, props.waistY);
+            torsoGradient.addColorStop(0, skinColor);
+            torsoGradient.addColorStop(0.5, adjustColor(skinColor, -10));
+            torsoGradient.addColorStop(1, adjustColor(skinColor, -5));
+            ctx.fillStyle = torsoGradient;
+            
+            ctx.beginPath();
+            ctx.moveTo(props.centerX - props.shoulderWidth / 2, props.shoulderY);
+            ctx.lineTo(props.centerX - props.waistWidth / 2, props.waistY);
+            ctx.lineTo(props.centerX + props.waistWidth / 2, props.waistY);
+            ctx.lineTo(props.centerX + props.shoulderWidth / 2, props.shoulderY);
+            ctx.closePath();
+            ctx.fill();
+            
+            // CADERAS
+            ctx.fillStyle = skinColor;
+            const hipY = props.waistY + props.hipHeight;
+            ctx.beginPath();
+            ctx.moveTo(props.centerX - props.waistWidth / 2, props.waistY);
+            ctx.quadraticCurveTo(props.centerX - props.waistWidth / 2 - 10, props.waistY + props.hipHeight / 2,
+                                props.centerX - props.waistWidth / 3, hipY);
+            ctx.lineTo(props.centerX + props.waistWidth / 3, hipY);
+            ctx.quadraticCurveTo(props.centerX + props.waistWidth / 2 + 10, props.waistY + props.hipHeight / 2,
+                                props.centerX + props.waistWidth / 2, props.waistY);
+            ctx.closePath();
+            ctx.fill();
+            
+            // BRAZOS Y PIERNAS
+            renderLimbs(props, skinColor);
+            
+            // TEXTURA DE PIEL
+            if (modelConfig.skinDetail > 50) {
+                addSkinTexture(props);
+            }
+            
+            ctx.restore();
+        }
+
+        function renderHead(props, skinColor) {
+            const ctx = canvas.getContext('2d');
+            const headCenterY = props.startY + props.headHeight / 2;
+            
+            // Gradiente para la cabeza
+            const headGradient = ctx.createRadialGradient(
+                props.centerX, headCenterY - props.headHeight / 4, 0,
+                props.centerX, headCenterY, props.headHeight / 2
+            );
+            headGradient.addColorStop(0, adjustColor(skinColor, 15));
+            headGradient.addColorStop(0.7, skinColor);
+            headGradient.addColorStop(1, adjustColor(skinColor, -20));
+            
+            ctx.fillStyle = headGradient;
+            ctx.beginPath();
+            ctx.ellipse(props.centerX, headCenterY, props.headWidth / 2, props.headHeight / 2, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // RASGOS FACIALES
+            renderFacialFeatures(props, skinColor);
+            
+            // CABELLO
+            if (modelConfig.hairStyle !== 'bald') {
+                renderHair(props);
+            }
+            
+            renderStats.polygons += 1;
+        }
+
+        function renderFacialFeatures(props, skinColor) {
+            const ctx = canvas.getContext('2d');
+            const faceY = props.startY + props.headHeight * 0.4;
+            
+            // OJOS
+            const eyeY = faceY;
+            const eyeSpacing = props.headWidth * 0.25;
+            
+            // Ojos blancos
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.ellipse(props.centerX - eyeSpacing, eyeY, 12, 8, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(props.centerX + eyeSpacing, eyeY, 12, 8, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Iris
+            ctx.fillStyle = '#4a7c59';
+            ctx.beginPath();
+            ctx.arc(props.centerX - eyeSpacing, eyeY, 6, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(props.centerX + eyeSpacing, eyeY, 6, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Pupilas
+            ctx.fillStyle = 'black';
+            ctx.beginPath();
+            ctx.arc(props.centerX - eyeSpacing, eyeY, 3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(props.centerX + eyeSpacing, eyeY, 3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Brillo en los ojos
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.beginPath();
+            ctx.arc(props.centerX - eyeSpacing + 2, eyeY - 2, 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(props.centerX + eyeSpacing + 2, eyeY - 2, 2, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // CEJAS
+            ctx.strokeStyle = modelConfig.hairColor;
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(props.centerX - eyeSpacing - 15, eyeY - 15);
+            ctx.quadraticCurveTo(props.centerX - eyeSpacing, eyeY - 17, props.centerX - eyeSpacing + 15, eyeY - 15);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(props.centerX + eyeSpacing - 15, eyeY - 15);
+            ctx.quadraticCurveTo(props.centerX + eyeSpacing, eyeY - 17, props.centerX + eyeSpacing + 15, eyeY - 15);
+            ctx.stroke();
+            
+            // NARIZ
+            const noseY = faceY + props.headHeight * 0.15;
+            ctx.strokeStyle = adjustColor(skinColor, -30);
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(props.centerX, eyeY + 5);
+            ctx.lineTo(props.centerX, noseY);
+            ctx.stroke();
+            
+            // Fosas nasales
+            ctx.fillStyle = adjustColor(skinColor, -40);
+            ctx.beginPath();
+            ctx.ellipse(props.centerX - 5, noseY, 3, 2, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(props.centerX + 5, noseY, 3, 2, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // BOCA
+            const mouthY = noseY + props.headHeight * 0.12;
+            ctx.strokeStyle = '#c55e5e';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(props.centerX - 20, mouthY);
+            ctx.quadraticCurveTo(props.centerX, mouthY + 3, props.centerX + 20, mouthY);
+            ctx.stroke();
+            
+            // Labio inferior
+            ctx.fillStyle = 'rgba(197, 94, 94, 0.3)';
+            ctx.beginPath();
+            ctx.moveTo(props.centerX - 20, mouthY);
+            ctx.quadraticCurveTo(props.centerX, mouthY + 8, props.centerX + 20, mouthY);
+            ctx.quadraticCurveTo(props.centerX, mouthY + 3, props.centerX - 20, mouthY);
+            ctx.fill();
+        }
+
+        function renderHair(props) {
+            const ctx = canvas.getContext('2d');
+            const hairColor = modelConfig.hairColor;
+            
+            ctx.fillStyle = hairColor;
+            
+            // Posición correcta del cabello (parte superior de la cabeza)
+            const hairTop = props.startY - props.headHeight * 0.15;
+            
+            if (modelConfig.hairStyle === 'short') {
+                // Cabello corto
+                ctx.beginPath();
+                ctx.ellipse(props.centerX, hairTop + props.headHeight * 0.25,
+                           props.headWidth / 2 + 10, props.headHeight * 0.4,
+                           0, Math.PI, 0);
+                ctx.fill();
+                
+                // Detalles del cabello
+                ctx.strokeStyle = adjustColor(hairColor, -20);
+                ctx.lineWidth = 1;
+                for (let i = 0; i < 20; i++) {
+                    const x = props.centerX - props.headWidth / 2 + (props.headWidth * i / 20);
+                    ctx.beginPath();
+                    ctx.moveTo(x, hairTop);
+                    ctx.lineTo(x + Math.random() * 10 - 5, hairTop + 30);
+                    ctx.stroke();
+                }
+            } else if (modelConfig.hairStyle === 'medium') {
+                // Cabello medio
+                ctx.beginPath();
+                ctx.ellipse(props.centerX, hairTop + props.headHeight * 0.25,
+                           props.headWidth / 2 + 15, props.headHeight * 0.5,
+                           0, Math.PI, 0);
+                ctx.fill();
+                
+                // Mechones laterales
+                ctx.beginPath();
+                ctx.moveTo(props.centerX - props.headWidth / 2 - 10, hairTop + props.headHeight * 0.3);
+                ctx.quadraticCurveTo(props.centerX - props.headWidth / 2 - 20, props.startY + props.headHeight * 0.5,
+                                    props.centerX - props.headWidth / 2 - 10, props.startY + props.headHeight * 0.7);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(props.centerX + props.headWidth / 2 + 10, hairTop + props.headHeight * 0.3);
+                ctx.quadraticCurveTo(props.centerX + props.headWidth / 2 + 20, props.startY + props.headHeight * 0.5,
+                                    props.centerX + props.headWidth / 2 + 10, props.startY + props.headHeight * 0.7);
+                ctx.fill();
+            } else if (modelConfig.hairStyle === 'long') {
+                // Cabello largo
+                ctx.beginPath();
+                ctx.ellipse(props.centerX, hairTop + props.headHeight * 0.3,
+                           props.headWidth / 2 + 20, props.headHeight * 0.6,
+                           0, Math.PI, 0);
+                ctx.fill();
+                
+                // Cabello largo cayendo
+                ctx.beginPath();
+                ctx.moveTo(props.centerX - props.headWidth / 2 - 15, props.startY + props.headHeight * 0.3);
+                ctx.quadraticCurveTo(props.centerX - props.headWidth / 2 - 30, props.startY + props.headHeight * 1.2,
+                                    props.centerX - props.shoulderWidth / 3, props.startY + props.headHeight * 1.5);
+                ctx.lineTo(props.centerX - props.shoulderWidth / 3 + 20, props.startY + props.headHeight * 1.5);
+                ctx.quadraticCurveTo(props.centerX - props.headWidth / 2 - 20, props.startY + props.headHeight * 1.2,
+                                    props.centerX - props.headWidth / 2 - 10, props.startY + props.headHeight * 0.4);
+                ctx.fill();
+                
+                ctx.beginPath();
+                ctx.moveTo(props.centerX + props.headWidth / 2 + 15, props.startY + props.headHeight * 0.3);
+                ctx.quadraticCurveTo(props.centerX + props.headWidth / 2 + 30, props.startY + props.headHeight * 1.2,
+                                    props.centerX + props.shoulderWidth / 3, props.startY + props.headHeight * 1.5);
+                ctx.lineTo(props.centerX + props.shoulderWidth / 3 - 20, props.startY + props.headHeight * 1.5);
+                ctx.quadraticCurveTo(props.centerX + props.headWidth / 2 + 20, props.startY + props.headHeight * 1.2,
+                                    props.centerX + props.headWidth / 2 + 10, props.startY + props.headHeight * 0.4);
+                ctx.fill();
+            }
+        }
+
+        function renderLimbs(props, skinColor) {
+            const ctx = canvas.getContext('2d');
+            
+            // BRAZOS
+            renderArm(props, 'left', skinColor);
+            renderArm(props, 'right', skinColor);
+            
+            // PIERNAS
+            renderLeg(props, 'left', skinColor);
+            renderLeg(props, 'right', skinColor);
+        }
+
+        function renderArm(props, side, skinColor) {
+            const ctx = canvas.getContext('2d');
+            const multiplier = side === 'left' ? -1 : 1;
+            const baseX = props.centerX + multiplier * props.shoulderWidth / 2;
+            const armThickness = 35 * (modelConfig.armThickness / 50);
+            
+            const shoulderY = props.shoulderY + 20;
+            const elbowY = shoulderY + props.armLength * 0.45;
+            const wristY = elbowY + props.armLength * 0.45;
+            const elbowX = baseX + multiplier * 40;
+            const wristX = baseX + multiplier * 50;
+            
+            // Gradiente del brazo
+            const armGradient = ctx.createLinearGradient(baseX, shoulderY, elbowX, elbowY);
+            armGradient.addColorStop(0, skinColor);
+            armGradient.addColorStop(0.5, adjustColor(skinColor, -8));
+            armGradient.addColorStop(1, adjustColor(skinColor, -5));
+            ctx.fillStyle = armGradient;
+            
+            // Brazo superior
+            ctx.beginPath();
+            ctx.moveTo(baseX - multiplier * armThickness / 2, shoulderY);
+            ctx.quadraticCurveTo(elbowX - multiplier * armThickness / 2, shoulderY + props.armLength * 0.2,
+                                elbowX - multiplier * armThickness / 3, elbowY);
+            ctx.lineTo(elbowX + multiplier * armThickness / 3, elbowY);
+            ctx.quadraticCurveTo(baseX + multiplier * armThickness / 2, shoulderY + props.armLength * 0.2,
+                                baseX + multiplier * armThickness / 2, shoulderY);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Antebrazo
+            const forearmGradient = ctx.createLinearGradient(elbowX, elbowY, wristX, wristY);
+            forearmGradient.addColorStop(0, adjustColor(skinColor, -5));
+            forearmGradient.addColorStop(1, adjustColor(skinColor, -10));
+            ctx.fillStyle = forearmGradient;
+            
+            ctx.beginPath();
+            ctx.moveTo(elbowX - multiplier * armThickness / 3, elbowY);
+            ctx.lineTo(wristX - multiplier * armThickness / 4, wristY);
+            ctx.lineTo(wristX + multiplier * armThickness / 4, wristY);
+            ctx.lineTo(elbowX + multiplier * armThickness / 3, elbowY);
+            ctx.closePath();
+            ctx.fill();
+            
+            // MANO
+            renderHand(props, wristX, wristY, multiplier, skinColor);
+            
+            renderStats.polygons += 2;
+        }
+
+        function renderHand(props, wristX, wristY, multiplier, skinColor) {
+            const ctx = canvas.getContext('2d');
+            const handWidth = 25;
+            const handHeight = 35;
+            
+            ctx.fillStyle = skinColor;
+            
+            // Palma
+            ctx.beginPath();
+            ctx.ellipse(wristX, wristY + handHeight / 2, handWidth / 2, handHeight / 2, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Dedos
+            const fingerPositions = [-0.6, -0.3, 0, 0.3, 0.6];
+            fingerPositions.forEach((pos, index) => {
+                const fingerX = wristX + pos * handWidth;
+                const fingerLength = index === 0 ? 15 : 20; // Pulgar más corto
+                
+                ctx.beginPath();
+                ctx.ellipse(fingerX, wristY + handHeight + fingerLength / 2, 3, fingerLength / 2, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Uña
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.beginPath();
+                ctx.ellipse(fingerX, wristY + handHeight + fingerLength - 3, 2, 3, 0, 0, Math.PI);
+                ctx.fill();
+                ctx.fillStyle = skinColor;
+            });
+            
+            renderStats.polygons += 6;
+        }
+
+        function renderLeg(props, side, skinColor) {
+            const ctx = canvas.getContext('2d');
+            const multiplier = side === 'left' ? -1 : 1;
+            const hipY = props.waistY + props.hipHeight;
+            const kneeY = hipY + props.legLength * 0.5;
+            const ankleY = kneeY + props.legLength * 0.5;
+            
+            const hipX = props.centerX + multiplier * props.waistWidth / 4;
+            const kneeX = props.centerX + multiplier * props.waistWidth / 5;
+            const ankleX = kneeX;
+            
+            const legThickness = 55 * (modelConfig.legThickness / 50);
+            
+            // Muslo
+            const thighGradient = ctx.createLinearGradient(hipX, hipY, kneeX, kneeY);
+            thighGradient.addColorStop(0, skinColor);
+            thighGradient.addColorStop(0.5, adjustColor(skinColor, -8));
+            thighGradient.addColorStop(1, adjustColor(skinColor, -5));
+            ctx.fillStyle = thighGradient;
+            
+            ctx.beginPath();
+            ctx.moveTo(hipX - multiplier * legThickness / 3, hipY);
+            ctx.lineTo(kneeX - multiplier * legThickness / 3.5, kneeY);
+            ctx.lineTo(kneeX + multiplier * legThickness / 3.5, kneeY);
+            ctx.lineTo(hipX + multiplier * legThickness / 3, hipY);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Pantorrilla
+            const calfGradient = ctx.createLinearGradient(kneeX, kneeY, ankleX, ankleY);
+            calfGradient.addColorStop(0, adjustColor(skinColor, -5));
+            calfGradient.addColorStop(0.4, adjustColor(skinColor, -8));
+            calfGradient.addColorStop(1, adjustColor(skinColor, -12));
+            ctx.fillStyle = calfGradient;
+            
+            ctx.beginPath();
+            ctx.moveTo(kneeX - multiplier * legThickness / 3.5, kneeY);
+            ctx.quadraticCurveTo(kneeX - multiplier * legThickness / 3, kneeY + props.legLength * 0.2,
+                                ankleX - multiplier * 15, ankleY);
+            ctx.lineTo(ankleX + multiplier * 15, ankleY);
+            ctx.quadraticCurveTo(kneeX + multiplier * legThickness / 3, kneeY + props.legLength * 0.2,
+                                kneeX + multiplier * legThickness / 3.5, kneeY);
+            ctx.closePath();
+            ctx.fill();
+            
+            // PIE
+            renderFoot(props, ankleX, ankleY, multiplier, skinColor);
+            
+            renderStats.polygons += 2;
+        }
+
+        function renderFoot(props, ankleX, ankleY, multiplier, skinColor) {
+            const ctx = canvas.getContext('2d');
+            const footLength = 40;
+            const footHeight = 20;
+            
+            ctx.fillStyle = adjustColor(skinColor, -10);
+            
+            // Pie
+            ctx.beginPath();
+            ctx.ellipse(ankleX + multiplier * footLength / 3, ankleY + footHeight / 2,
+                       footLength / 2, footHeight / 2, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Dedos
+            for (let i = 0; i < 5; i++) {
+                const toeX = ankleX + multiplier * (footLength / 2 + 5);
+                const toeY = ankleY + footHeight / 2 - 10 + i * 5;
+                
+                ctx.beginPath();
+                ctx.ellipse(toeX, toeY, 6 - i * 0.5, 4, 0, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            renderStats.polygons += 6;
+        }
+
+        function addSkinTexture(props) {
+            const ctx = canvas.getContext('2d');
+            const detailLevel = modelConfig.skinDetail / 100;
+            
+            // Poros y textura de piel
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
+            const numPores = Math.floor(detailLevel * 500);
+            
+            for (let i = 0; i < numPores; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const size = Math.random() * 0.8;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Arrugas según edad
+            const ageLines = Math.floor((modelConfig.age - 18) / 10);
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.lineWidth = 0.5;
+            
+            for (let i = 0; i < ageLines; i++) {
+                const y = props.startY + props.headHeight * 0.2 + i * 8;
+                ctx.beginPath();
+                ctx.moveTo(props.centerX - props.headWidth * 0.3, y);
+                ctx.quadraticCurveTo(props.centerX, y - 2, props.centerX + props.headWidth * 0.3, y);
+                ctx.stroke();
+            }
+        }
+
+        // ==================== RENDERIZADO SISTEMA VASCULAR ====================
+        function renderVascularSystem(props) {
+            const ctx = canvas.getContext('2d');
+            const vascularOpacity = modelConfig.vascularity / 100;
+            
+            ctx.save();
+            ctx.strokeStyle = `rgba(100, 140, 200, ${vascularOpacity * 0.4})`;
+            ctx.lineWidth = 2;
+            
+            // Venas principales del brazo izquierdo
+            const leftArmX = props.centerX - props.shoulderWidth / 2;
+            ctx.beginPath();
+            ctx.moveTo(leftArmX - 20, props.shoulderY + 40);
+            ctx.quadraticCurveTo(leftArmX - 30, props.shoulderY + props.armLength * 0.3,
+                                leftArmX - 40, props.shoulderY + props.armLength * 0.6);
+            ctx.stroke();
+            
+            ctx.strokeStyle = `rgba(100, 140, 200, ${vascularOpacity * 0.3})`;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(leftArmX - 15, props.shoulderY + 50);
+            ctx.quadraticCurveTo(leftArmX - 25, props.shoulderY + props.armLength * 0.35,
+                                leftArmX - 35, props.shoulderY + props.armLength * 0.65);
+            ctx.stroke();
+            
+            // Venas principales del brazo derecho
+            const rightArmX = props.centerX + props.shoulderWidth / 2;
+            ctx.strokeStyle = `rgba(100, 140, 200, ${vascularOpacity * 0.4})`;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(rightArmX + 20, props.shoulderY + 40);
+            ctx.quadraticCurveTo(rightArmX + 30, props.shoulderY + props.armLength * 0.3,
+                                rightArmX + 40, props.shoulderY + props.armLength * 0.6);
+            ctx.stroke();
+            
+            // Venas en el cuello
+            ctx.strokeStyle = `rgba(120, 160, 220, ${vascularOpacity * 0.3})`;
+            ctx.lineWidth = 1.5;
+            const neckY = props.startY + props.headHeight;
+            ctx.beginPath();
+            ctx.moveTo(props.centerX - 15, neckY + 10);
+            ctx.lineTo(props.centerX - 20, props.shoulderY);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(props.centerX + 15, neckY + 10);
+            ctx.lineTo(props.centerX + 20, props.shoulderY);
+            ctx.stroke();
+            
+            // Venas en las piernas
+            renderLegVeins(props, vascularOpacity);
+            
+            ctx.restore();
+        }
+
+        function renderLegVeins(props, opacity) {
+            const ctx = canvas.getContext('2d');
+            const hipY = props.waistY + props.hipHeight;
+            const kneeY = hipY + props.legLength * 0.5;
+            
+            // Pierna izquierda
+            ctx.strokeStyle = `rgba(100, 140, 200, ${opacity * 0.3})`;
+            ctx.lineWidth = 1.5;
+            const leftKneeX = props.centerX - props.waistWidth / 5;
+            ctx.beginPath();
+            ctx.moveTo(leftKneeX - 15, kneeY + 20);
+            ctx.lineTo(leftKneeX - 18, kneeY + props.legLength * 0.3);
+            ctx.stroke();
+            
+            // Pierna derecha
+            const rightKneeX = props.centerX + props.waistWidth / 5;
+            ctx.beginPath();
+            ctx.moveTo(rightKneeX + 15, kneeY + 20);
+            ctx.lineTo(rightKneeX + 18, kneeY + props.legLength * 0.3);
+            ctx.stroke();
+        }
+
+        // ==================== ILUMINACIÓN Y SOMBREADO ====================
+        function applyLightingAndShading(props) {
+            const ctx = canvas.getContext('2d');
+            const intensity = modelConfig.lightIntensity / 100;
+            const angle = (modelConfig.lightAngle * Math.PI) / 180;
+            const shadingLevel = modelConfig.shading / 100;
+            
+            ctx.save();
+            
+            // Calcular dirección de luz
+            const lightX = Math.cos(angle);
+            const lightY = Math.sin(angle);
+            
+            // Aplicar sombras principales
+            ctx.fillStyle = `rgba(0, 0, 0, ${0.3 * shadingLevel})`;
+            
+            // Sombra bajo la barbilla
+            ctx.beginPath();
+            ctx.ellipse(props.centerX, props.startY + props.headHeight + 5,
+                       props.headWidth / 3, 10, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Sombras en los lados del cuerpo (según ángulo de luz)
+            if (lightX < 0) {
+                // Luz desde la izquierda, sombra en el lado derecho
+                ctx.fillStyle = `rgba(0, 0, 0, ${0.2 * shadingLevel * Math.abs(lightX)})`;
+                ctx.fillRect(props.centerX, props.shoulderY, props.shoulderWidth / 2, props.torsoLength);
+            } else {
+                // Luz desde la derecha, sombra en el lado izquierdo
+                ctx.fillStyle = `rgba(0, 0, 0, ${0.2 * shadingLevel * Math.abs(lightX)})`;
+                ctx.fillRect(props.centerX - props.shoulderWidth / 2, props.shoulderY, props.shoulderWidth / 2, props.torsoLength);
+            }
+            
+            // Aplicar reflejos (highlights)
+            const lightRgb = hexToRgb(modelConfig.lightColor);
+            ctx.fillStyle = `rgba(${lightRgb.r}, ${lightRgb.g}, ${lightRgb.b}, ${0.15 * intensity})`;
+            
+            // Reflejo en la frente
+            ctx.beginPath();
+            ctx.ellipse(props.centerX - lightX * 20, props.startY + props.headHeight * 0.25,
+                       30, 15, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Reflejo en los hombros
+            ctx.beginPath();
+            ctx.ellipse(props.centerX - props.shoulderWidth / 3 - lightX * 30, props.shoulderY + 20,
+                       40, 20, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(props.centerX + props.shoulderWidth / 3 - lightX * 30, props.shoulderY + 20,
+                       40, 20, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Sombra proyectada en el suelo (opcional)
+            ctx.fillStyle = `rgba(0, 0, 0, ${0.1 * shadingLevel})`;
+            const ankleY = props.waistY + props.hipHeight + props.legLength;
+            ctx.beginPath();
+            ctx.ellipse(props.centerX, ankleY + 40,
+                       props.shoulderWidth * 0.8, 15, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.restore();
+        }
+
+        // ==================== DETALLES FINALES ====================
+        function renderFinalDetails(props) {
+            const ctx = canvas.getContext('2d');
+            
+            // Líneas de contorno sutiles
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.lineWidth = 1;
+            
+            // Contorno de la cabeza
+            ctx.beginPath();
+            ctx.ellipse(props.centerX, props.startY + props.headHeight / 2,
+                       props.headWidth / 2, props.headHeight / 2, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Detalles musculares sutiles
+            addMuscleDefinitionLines(props);
+            
+            // Añadir más vértices a las estadísticas
+            renderStats.vertices += 1500;
+        }
+
+        function addMuscleDefinitionLines(props) {
+            const ctx = canvas.getContext('2d');
+            const definition = modelConfig.build / 200;
+            
+            ctx.strokeStyle = `rgba(0, 0, 0, ${definition})`;
+            ctx.lineWidth = 0.8;
+            
+            // Línea de separación abdominal
+            ctx.beginPath();
+            ctx.moveTo(props.centerX, props.shoulderY + props.chestHeight);
+            ctx.lineTo(props.centerX, props.waistY);
+            ctx.stroke();
+            
+            // Líneas de definición pectoral
+            if (modelConfig.chest > 30) {
+                ctx.beginPath();
+                ctx.moveTo(props.centerX - props.shoulderWidth / 4, props.shoulderY + 20);
+                ctx.quadraticCurveTo(props.centerX - 10, props.shoulderY + 40,
+                                    props.centerX, props.shoulderY + 60);
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.moveTo(props.centerX + props.shoulderWidth / 4, props.shoulderY + 20);
+                ctx.quadraticCurveTo(props.centerX + 10, props.shoulderY + 40,
+                                    props.centerX, props.shoulderY + 60);
+                ctx.stroke();
+            }
+            
+            // Líneas de los abdominales
+            const absVisible = modelConfig.build > 40;
+            if (absVisible) {
+                const absY = props.shoulderY + props.chestHeight + 20;
+                for (let i = 0; i < 3; i++) {
+                    const y = absY + i * 30;
+                    ctx.beginPath();
+                    ctx.moveTo(props.centerX - 40, y);
+                    ctx.lineTo(props.centerX + 40, y);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        // ==================== FUNCIONES DE CONTROL ====================
+        function randomizeAll() {
+            modelConfig.gender = Math.random() > 0.5 ? 'male' : 'female';
+            modelConfig.height = randomRange(150, 200);
+            modelConfig.build = randomRange(0, 100);
+            modelConfig.age = randomRange(18, 80);
+            modelConfig.skinTone = randomSkinTone();
+            modelConfig.skinDetail = randomRange(50, 200);
+            modelConfig.vascularity = randomRange(0, 100);
+            modelConfig.headSize = randomRange(80, 120);
+            modelConfig.hairColor = randomHairColor();
+            modelConfig.hairStyle = ['short', 'medium', 'long', 'bald'][Math.floor(Math.random() * 4)];
+            modelConfig.shoulderWidth = randomRange(70, 140);
+            modelConfig.chest = randomRange(0, 100);
+            modelConfig.waist = randomRange(0, 100);
+            modelConfig.torsoLength = randomRange(80, 120);
+            modelConfig.armThickness = randomRange(0, 100);
+            modelConfig.armLength = randomRange(80, 120);
+            modelConfig.armMuscle = randomRange(0, 100);
+            modelConfig.legThickness = randomRange(0, 100);
+            modelConfig.legLength = randomRange(80, 120);
+            modelConfig.calf = randomRange(0, 100);
+            modelConfig.lightIntensity = randomRange(50, 150);
+            modelConfig.lightAngle = randomRange(0, 360);
+            modelConfig.shading = randomRange(50, 150);
+            
+            initializeControls();
+            renderModel();
+        }
+
+        function resetDefault() {
+            modelConfig = {
+                // Alelos genéticos
+                skinAllele1: 'light',
+                skinAllele2: 'light',
+                eyeAllele1: 'green',
+                eyeAllele2: 'green',
+                hairAllele1: 'black',
+                hairAllele2: 'black',
+                hairTextureAllele1: 'straight',
+                hairTextureAllele2: 'straight',
+                noseAllele1: 'small',
+                noseAllele2: 'small',
+                lipAllele1: 'thin',
+                lipAllele2: 'thin',
+                earlobeAllele1: 'free',
+                earlobeAllele2: 'free',
+                heightAllele1: 'tall',
+                heightAllele2: 'tall',
+                buildAllele1: 'mesomorph',
+                buildAllele2: 'mesomorph',
+                
+                // Fenotipos
+                skinTone: '#d4a574',
+                eyeColor: '#4a7c59',
+                hairColor: '#3d2817',
+                lipColor: '#d17171',
+                
+                // Otros
+                faceShape: 'oval',
+                eyeSize: 100,
+                eyeSpacing: 100,
+                noseWidth: 100,
+                mouthWidth: 100,
+                earSize: 100,
+                hairStyle: 'short',
+                height: 170,
+                build: 50,
+                shoulderWidth: 100,
+                chest: 50,
+                waist: 50,
+                armThickness: 50,
+                armLength: 100,
+                legThickness: 50,
+                legLength: 100,
+                lightIntensity: 100,
+                lightAngle: 45,
+                expression: 'neutral',
+                skinDetail: 100,
+                shading: 100,
+                age: 30,
+                vascularity: 30,
+                showSkeleton: true,
+                showMuscles: true,
+                showSkin: true,
+                showVeins: true,
+                showShading: true
+            };
+            
+            initializeControls();
+            calculatePhenotypes();
+            renderModel();
+        }
+
+        function exportImage() {
+            const link = document.createElement('a');
+            link.download = 'modelo-humano-hiperrealista.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        function randomRange(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function randomSkinTone() {
+            const tones = ['#ffd4a3', '#d4a574', '#c68642', '#8d5524', '#4a2511'];
+            return tones[Math.floor(Math.random() * tones.length)];
+        }
+
+        function randomHairColor() {
+            const colors = ['#3d2817', '#6b4423', '#1c1c1c', '#8b7355', '#b8860b'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+    </script>
 </body>
-</html>
+</html>;
