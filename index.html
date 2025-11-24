@@ -275,6 +275,19 @@
         <div class="controls-panel">
             <h1>🎨 Sistema Avanzado de Renderizado</h1>
             
+            <h2>🧬 CROMOSOMAS SEXUALES</h2>
+            
+            <div class="control-group" style="background: rgba(0, 212, 255, 0.15); border: 2px solid #00d4ff;">
+                <label style="font-size: 16px; color: #00d4ff;">⚠️ Seleccionar Sexo Cromosómico</label>
+                <select id="sex" style="font-size: 15px; padding: 12px;">
+                    <option value="XX">XX - Mujer</option>
+                    <option value="XY">XY - Varón</option>
+                </select>
+                <div class="value-display" id="sexInfo" style="margin-top: 10px; font-size: 12px;">
+                    Cariotipo: XX (Femenino) - 46 cromosomas con dos cromosomas X
+                </div>
+            </div>
+            
             <h2>🧬 GENÉTICA Y HERENCIA</h2>
             
             <div class="control-group">
@@ -378,7 +391,7 @@
                 </select>
             </div>
             
-            <h2> Tipo de Cabello (Textura)</h2>
+            <h2>🦷 Tipo de Cabello (Textura)</h2>
             
             <div class="control-group">
                 <label>Alelo 1 - Textura</label>
@@ -771,6 +784,9 @@
         const ctx = canvas.getContext('2d');
         
         let modelConfig = {
+            // Cromosomas sexuales
+            sex: 'XX',
+            
             // Alelos genéticos
             skinAllele1: 'light',
             skinAllele2: 'light',
@@ -845,7 +861,25 @@
         
         // ==================== FUNCIONES GENÉTICAS ====================
         
+        function updateSexInfo() {
+            const sex = modelConfig.sex;
+            const sexInfo = document.getElementById('sexInfo');
+            
+            if (sexInfo) {
+                if (sex === 'XX') {
+                    sexInfo.textContent = 'Cariotipo: 46,XX (Femenino) - Dos cromosomas X. Desarrollo de características sexuales femeninas.';
+                    sexInfo.style.color = '#ff69b4';
+                } else {
+                    sexInfo.textContent = 'Cariotipo: 46,XY (Masculino) - Un cromosoma X y un Y. El cromosoma Y determina el desarrollo testicular.';
+                    sexInfo.style.color = '#4a9eff';
+                }
+            }
+        }
+        
         function calculatePhenotypes() {
+            // Actualizar información de sexo cromosómico
+            updateSexInfo();
+            
             // PIEL: Herencia poligénica
             const skin1 = modelConfig.skinAllele1;
             const skin2 = modelConfig.skinAllele2;
@@ -1214,12 +1248,19 @@ Nota: Este es un modelo simplificado. La herencia real puede ser más compleja.
             const scale = (modelConfig.height || 170) / 170;
             const totalHeight = baseHeight * scale;
             
+            // Ajustar proporciones según sexo cromosómico
+            const isFemale = modelConfig.sex === 'XX';
+            
             // Proporciones estándar del cuerpo humano (en cabezas)
             const headHeight = totalHeight / 8;
             const headSize = headHeight * 1;
             
             const centerX = canvas.width / 2;
             const startY = canvas.height * 0.05;
+            
+            // Mujeres tienden a tener hombros más estrechos y caderas más anchas
+            const shoulderModifier = isFemale ? 0.85 : 1.0;
+            const waistModifier = isFemale ? 1.15 : 1.0;
             
             return {
                 centerX: centerX,
@@ -1228,15 +1269,16 @@ Nota: Este es un modelo simplificado. La herencia real puede ser más compleja.
                 headWidth: headSize * 0.7,
                 neckHeight: headSize * 0.3,
                 shoulderY: startY + headSize + headSize * 0.3,
-                shoulderWidth: headSize * 2.2 * ((modelConfig.shoulderWidth || 100) / 100),
+                shoulderWidth: headSize * 2.2 * ((modelConfig.shoulderWidth || 100) / 100) * shoulderModifier,
                 chestHeight: headSize * 1.2,
                 waistY: startY + headSize + headSize * 0.3 + headSize * 1.2 + headSize * 0.5,
-                waistWidth: headSize * 1.4 * ((modelConfig.waist || 50) / 100),
+                waistWidth: headSize * 1.4 * ((modelConfig.waist || 50) / 100) * waistModifier,
                 hipHeight: headSize * 0.8,
                 legLength: totalHeight * 0.48 * ((modelConfig.legLength || 100) / 100),
                 armLength: headSize * 2.5 * ((modelConfig.armLength || 100) / 100),
                 torsoLength: headSize * 2.5,
-                scale: scale
+                scale: scale,
+                isFemale: isFemale
             };
         }
 
@@ -1340,6 +1382,10 @@ Nota: Este es un modelo simplificado. La herencia real puede ser más compleja.
             const muscleColor = adjustColor(modelConfig.skinTone, -40);
             const muscleDefinition = modelConfig.build / 100;
             
+            // Reducir definición muscular en mujeres (diferencias hormonales)
+            const definitionModifier = props.isFemale ? 0.7 : 1.0;
+            const adjustedDefinition = muscleDefinition * definitionModifier;
+            
             // CABEZA Y CUELLO
             // Músculos del cuello (esternocleidomastoideo)
             ctx.fillStyle = `rgba(${hexToRgb(muscleColor).r}, ${hexToRgb(muscleColor).g}, ${hexToRgb(muscleColor).b}, 0.6)`;
@@ -1385,21 +1431,46 @@ Nota: Este es un modelo simplificado. La herencia real puede ser más compleja.
             const pectoralHeight = props.chestHeight * 0.7;
             const pectoralWidth = props.shoulderWidth * 0.4;
             
-            // Pectoral izquierdo
-            ctx.beginPath();
-            ctx.ellipse(props.centerX - props.shoulderWidth / 4, props.shoulderY + pectoralHeight / 2,
-                       pectoralWidth / 2 * (1 + chestDevelopment * 0.5), 
-                       pectoralHeight / 2 * (1 + chestDevelopment * 0.3),
-                       -0.2, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Pectoral derecho
-            ctx.beginPath();
-            ctx.ellipse(props.centerX + props.shoulderWidth / 4, props.shoulderY + pectoralHeight / 2,
-                       pectoralWidth / 2 * (1 + chestDevelopment * 0.5), 
-                       pectoralHeight / 2 * (1 + chestDevelopment * 0.3),
-                       0.2, 0, Math.PI * 2);
-            ctx.fill();
+            // Mujeres tienen desarrollo mamario en lugar de pectorales pronunciados
+            if (props.isFemale) {
+                // Dibujar forma femenina del pecho
+                ctx.globalAlpha = 0.6;
+                
+                // Pecho izquierdo (femenino)
+                ctx.beginPath();
+                ctx.ellipse(props.centerX - props.shoulderWidth / 4, props.shoulderY + pectoralHeight / 2,
+                           pectoralWidth / 2.2, 
+                           pectoralHeight / 1.8,
+                           -0.1, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Pecho derecho (femenino)
+                ctx.beginPath();
+                ctx.ellipse(props.centerX + props.shoulderWidth / 4, props.shoulderY + pectoralHeight / 2,
+                           pectoralWidth / 2.2, 
+                           pectoralHeight / 1.8,
+                           0.1, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.globalAlpha = 1;
+            } else {
+                // Pectoral masculino
+                // Pectoral izquierdo
+                ctx.beginPath();
+                ctx.ellipse(props.centerX - props.shoulderWidth / 4, props.shoulderY + pectoralHeight / 2,
+                           pectoralWidth / 2 * (1 + chestDevelopment * 0.5), 
+                           pectoralHeight / 2 * (1 + chestDevelopment * 0.3),
+                           -0.2, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Pectoral derecho
+                ctx.beginPath();
+                ctx.ellipse(props.centerX + props.shoulderWidth / 4, props.shoulderY + pectoralHeight / 2,
+                           pectoralWidth / 2 * (1 + chestDevelopment * 0.5), 
+                           pectoralHeight / 2 * (1 + chestDevelopment * 0.3),
+                           0.2, 0, Math.PI * 2);
+                ctx.fill();
+            }
             renderStats.polygons += 2;
             
             // ABDOMINALES (Rectus abdominis)
@@ -1407,13 +1478,16 @@ Nota: Este es un modelo simplificado. La herencia real puede ser más compleja.
             const absHeight = props.torsoLength - props.chestHeight;
             const absWidth = props.shoulderWidth * 0.3;
             
+            // Abdominales menos marcados en mujeres
+            const absVisibility = props.isFemale ? adjustedDefinition * 0.6 : adjustedDefinition;
+            
             for (let i = 0; i < 6; i++) {
                 const row = Math.floor(i / 2);
                 const col = i % 2;
                 const absX = props.centerX + (col === 0 ? -absWidth / 3 : absWidth / 3);
                 const absYPos = absY + row * (absHeight / 3);
                 
-                ctx.globalAlpha = 0.5 + muscleDefinition * 0.3;
+                ctx.globalAlpha = 0.3 + absVisibility * 0.3;
                 ctx.beginPath();
                 ctx.ellipse(absX, absYPos, absWidth / 4, absHeight / 8, 0, 0, Math.PI * 2);
                 ctx.fill();
@@ -1643,6 +1717,9 @@ Nota: Este es un modelo simplificado. La herencia real puede ser más compleja.
             const ctx = canvas.getContext('2d');
             const faceY = props.startY + props.headHeight * 0.4;
             
+            // Características faciales ligeramente más delicadas en mujeres
+            const featureScale = props.isFemale ? 0.95 : 1.0;
+            
             // OJOS
             const eyeY = faceY;
             const eyeSpacing = props.headWidth * 0.25;
@@ -1650,42 +1727,42 @@ Nota: Este es un modelo simplificado. La herencia real puede ser más compleja.
             // Ojos blancos
             ctx.fillStyle = 'white';
             ctx.beginPath();
-            ctx.ellipse(props.centerX - eyeSpacing, eyeY, 12, 8, 0, 0, Math.PI * 2);
+            ctx.ellipse(props.centerX - eyeSpacing, eyeY, 12 * featureScale, 8 * featureScale, 0, 0, Math.PI * 2);
             ctx.fill();
             ctx.beginPath();
-            ctx.ellipse(props.centerX + eyeSpacing, eyeY, 12, 8, 0, 0, Math.PI * 2);
+            ctx.ellipse(props.centerX + eyeSpacing, eyeY, 12 * featureScale, 8 * featureScale, 0, 0, Math.PI * 2);
             ctx.fill();
             
             // Iris
             ctx.fillStyle = '#4a7c59';
             ctx.beginPath();
-            ctx.arc(props.centerX - eyeSpacing, eyeY, 6, 0, Math.PI * 2);
+            ctx.arc(props.centerX - eyeSpacing, eyeY, 6 * featureScale, 0, Math.PI * 2);
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(props.centerX + eyeSpacing, eyeY, 6, 0, Math.PI * 2);
+            ctx.arc(props.centerX + eyeSpacing, eyeY, 6 * featureScale, 0, Math.PI * 2);
             ctx.fill();
             
             // Pupilas
             ctx.fillStyle = 'black';
             ctx.beginPath();
-            ctx.arc(props.centerX - eyeSpacing, eyeY, 3, 0, Math.PI * 2);
+            ctx.arc(props.centerX - eyeSpacing, eyeY, 3 * featureScale, 0, Math.PI * 2);
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(props.centerX + eyeSpacing, eyeY, 3, 0, Math.PI * 2);
+            ctx.arc(props.centerX + eyeSpacing, eyeY, 3 * featureScale, 0, Math.PI * 2);
             ctx.fill();
             
             // Brillo en los ojos
             ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
             ctx.beginPath();
-            ctx.arc(props.centerX - eyeSpacing + 2, eyeY - 2, 2, 0, Math.PI * 2);
+            ctx.arc(props.centerX - eyeSpacing + 2, eyeY - 2, 2 * featureScale, 0, Math.PI * 2);
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(props.centerX + eyeSpacing + 2, eyeY - 2, 2, 0, Math.PI * 2);
+            ctx.arc(props.centerX + eyeSpacing + 2, eyeY - 2, 2 * featureScale, 0, Math.PI * 2);
             ctx.fill();
             
-            // CEJAS
+            // CEJAS (más delgadas en mujeres)
             ctx.strokeStyle = modelConfig.hairColor;
-            ctx.lineWidth = 3;
+            ctx.lineWidth = props.isFemale ? 2 : 3;
             ctx.lineCap = 'round';
             ctx.beginPath();
             ctx.moveTo(props.centerX - eyeSpacing - 15, eyeY - 15);
@@ -2246,6 +2323,9 @@ Nota: Este es un modelo simplificado. La herencia real puede ser más compleja.
 
         function resetDefault() {
             modelConfig = {
+                // Cromosomas sexuales
+                sex: 'XX',
+                
                 // Alelos genéticos
                 skinAllele1: 'light',
                 skinAllele2: 'light',
